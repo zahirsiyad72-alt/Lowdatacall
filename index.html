@@ -399,13 +399,11 @@ if (/FBAN|FBAV|Instagram|Line\/|MicroMessenger|Snapchat|TikTok/i.test(navigator.
 // --- PWA Update & Install Logic ---
 let newWorker;
 let refreshing = false;
-
 navigator.serviceWorker.addEventListener('controllerchange', () => {
   if (refreshing) return;
   refreshing = true;
   window.location.reload();
 });
-
 $('#btn-update-refresh').addEventListener('click', () => {
   if (newWorker) { newWorker.postMessage({ action: 'skipWaiting' }); } 
   else { window.location.reload(); }
@@ -518,8 +516,8 @@ function playRing() {
   }
 }
 
-// Global SSE listener for incoming calls
-const globalEs = new EventSource('/events?room=global&id=' + myId + '&token=' + token);
+// Global listener for incoming calls
+const globalEs = new EventSource('/register?id=' + myId);
 globalEs.onmessage = e => {
   const m = JSON.parse(e.data);
   if (m.type === 'incoming-call') {
