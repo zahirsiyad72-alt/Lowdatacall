@@ -81,7 +81,6 @@ summary{cursor:pointer;color:var(--mut)}
 @media(prefers-color-scheme:dark){.savings{background:linear-gradient(135deg,#04201c,#064e3b);color:#a7f3d0;border-color:#0f766e}}
 .savings b{font-size:22px;display:block}.savings small{opacity:.8}.savings .sub{font-size:13px;margin-top:4px}
 
-/* ---- Usage page ---- */
 #usage{flex:1;overflow:auto;max-width:720px;margin:0 auto;width:100%;padding:14px 14px 30px}
 #usage h2{margin:6px 0 10px;font-size:20px}
 .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:14px}
@@ -108,18 +107,26 @@ summary{cursor:pointer;color:var(--mut)}
 .hist .empty{background:var(--card);border:1px dashed var(--bd);border-radius:12px;padding:26px 16px;text-align:center;color:var(--mut)}
 .hist .empty b{display:block;color:var(--fg);font-size:16px;margin-bottom:4px}
 .tabs{display:flex;gap:6px;padding:8px 10px;background:var(--card);border-top:1px solid var(--bd)}
-.tabs .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 4px;border:1px solid transparent;border-radius:10px;background:transparent;cursor:pointer;font-size:11px;color:var(--mut)}
+.tabs .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border:1px solid transparent;border-radius:10px;background:transparent;cursor:pointer;font-size:11px;color:var(--mut)}
 .tabs .tab.on{color:var(--acc);border-color:var(--bd);background:var(--bg)}
-.tabs .tab i{font-style:normal;font-size:18px;line-height:1}
 [hidden]{display:none!important}
 @media(max-width:480px){#roominfo code{display:none}.hero h1{font-size:24px}.two{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="logo" viewBox="0 0 64 64">
-<rect width="64" height="64" rx="14" fill="#0f766e"/>
-<path d="M10 20l10 12-10 12M54 20L44 32l10 12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M26.5 24v16l11-8z" fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0f766e"/><path d="M10 20l10 12-10 12M54 20L44 32l10 12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M26.5 24v16l11-8z" fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></symbol>
+<symbol id="ic-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+<symbol id="ic-chart" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></symbol>
+<symbol id="ic-mic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></symbol>
+<symbol id="ic-cam" viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></symbol>
+<symbol id="ic-screen" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+<symbol id="ic-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></symbol>
+<symbol id="ic-speaker" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></symbol>
+<symbol id="ic-exit" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+<symbol id="ic-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+</svg>
 
 <header>
   <div class="brand"><svg class="logo"><use href="#logo"/></svg><span>LowData <em>Call</em></span></div>
@@ -173,7 +180,6 @@ summary{cursor:pointer;color:var(--mut)}
         <h3>Join</h3>
         <label class="opt"><input type="checkbox" id="mobile"> I am on mobile data</label>
         <label class="opt"><input type="checkbox" id="camoff"> Join with camera off</label>
-        <label class="opt"><input type="checkbox" id="forcerelay"> Force relay (use if calls fail on mobile data)</label>
         <button id="go" class="btn primary big" style="margin-top:8px">Join meeting</button>
         <button id="test" class="btn big" style="margin-top:8px">Test my connection</button>
         <div id="testout" class="fine" style="text-align:center"></div>
@@ -181,6 +187,16 @@ summary{cursor:pointer;color:var(--mut)}
     </div>
 
     <p id="inapp" hidden style="color:var(--warn);font-size:13px">You seem to be in an in-app browser. If the camera does not work, open in Chrome or Safari.</p>
+  </div>
+
+  <!-- PWA Install Section -->
+  <div style="margin-top:14px; text-align:center;">
+    <button id="install-btn" class="btn big" style="display:none; background:var(--card); color:var(--acc); border-color:var(--acc);">
+      <svg class="ic"><use href="#ic-download"/></svg> Install App on this device
+    </button>
+    <div id="ios-install-hint" style="display:none; font-size:13px; color:var(--mut); margin-top:8px; padding:10px; background:var(--card); border-radius:12px; border:1px solid var(--bd);">
+      To install on iPhone/iPad: tap the <b>Share</b> icon at the bottom of Safari and choose <b>Add to Home Screen</b>.
+    </div>
   </div>
 
   <details>
@@ -210,14 +226,14 @@ summary{cursor:pointer;color:var(--mut)}
 
   <button class="dbar" id="dbar" title="Open data usage"><span id="dq">–</span><span id="du">0 MB used</span><i id="dfill"></i></button>
   <nav id="bar">
-    <button id="mic" class="ctl" title="Mute / unmute"><svg class="ic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></svg><span>Mic</span></button>
-    <button id="cam" class="ctl" title="Camera on / off"><svg class="ic" viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></svg><span>Camera</span></button>
-    <button id="share" class="ctl" title="Share your screen"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Slides</span></button>
-    <button id="recv" class="ctl" title="Stop receiving others' video"><svg class="ic" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></svg><span>Watch</span></button>
-    <button id="speaker" class="ctl" title="Switch to loudspeaker"><svg class="ic" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg><span>Speaker</span></button>
-    <button id="view" class="ctl" title="Switch view"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>View</span></button>
-    <button id="data" class="ctl" title="Data usage and quality"><svg class="ic" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg><span>Data</span></button>
-    <button id="leave" class="ctl danger" title="Leave the call"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg><span>Leave</span></button>
+    <button id="mic" class="ctl" title="Mute / unmute"><svg class="ic"><use href="#ic-mic"/></svg><span>Mic</span></button>
+    <button id="cam" class="ctl" title="Camera on / off"><svg class="ic"><use href="#ic-cam"/></svg><span>Camera</span></button>
+    <button id="share" class="ctl" title="Share your screen"><svg class="ic"><use href="#ic-screen"/></svg><span>Slides</span></button>
+    <button id="recv" class="ctl" title="Stop receiving others' video"><svg class="ic"><use href="#ic-eye"/></svg><span>Watch</span></button>
+    <button id="speaker" class="ctl" title="Switch to loudspeaker"><svg class="ic"><use href="#ic-speaker"/></svg><span>Speaker</span></button>
+    <button id="view" class="ctl" title="Switch view"><svg class="ic"><use href="#ic-grid"/></svg><span>View</span></button>
+    <button id="data" class="ctl" title="Data usage and quality"><svg class="ic"><use href="#ic-chart"/></svg><span>Data</span></button>
+    <button id="leave" class="ctl danger" title="Leave the call"><svg class="ic"><use href="#ic-exit"/></svg><span>Leave</span></button>
   </nav>
 </div>
 
@@ -238,8 +254,8 @@ summary{cursor:pointer;color:var(--mut)}
 </div>
 
 <nav class="tabs" id="tabs" hidden>
-  <button class="tab" id="tab-call" data-tab="call"><i>📞</i>Call</button>
-  <button class="tab" id="tab-usage" data-tab="usage"><i>📊</i>Usage</button>
+  <button class="tab on" id="tab-call" data-tab="call"><svg class="ic" style="width:18px;height:18px"><use href="#ic-phone"/></svg><span>Call</span></button>
+  <button class="tab" id="tab-usage" data-tab="usage"><svg class="ic" style="width:18px;height:18px"><use href="#ic-chart"/></svg><span>Usage</span></button>
 </nav>
 
 <div class="sheet" id="sheet-invite" hidden><div class="box">
@@ -321,7 +337,7 @@ summary{cursor:pointer;color:var(--mut)}
   </div>
   <div id="sumCats" class="fine" style="margin-top:10px"></div>
   <div class="rowb" style="margin-top:12px">
-    <button class="btn primary" id="sumNew">Start another call</button>
+    <button class="btn primary" id="sumNew">Back to Home</button>
     <button class="btn" id="sumUsage">See all usage</button>
   </div>
   <div class="fine">Baseline assumes a normal HD video call of the same duration at ~1,400 MB/hour for 1-to-1. Your actual usage is measured from WebRTC stats. Carrier-billed usage may differ slightly.</div>
@@ -331,6 +347,31 @@ summary{cursor:pointer;color:var(--mut)}
 const $ = s => document.querySelector(s);
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(() => {});
 if (/FBAN|FBAV|Instagram|Line\/|MicroMessenger|Snapchat|TikTok/i.test(navigator.userAgent)) $('#inapp').hidden = false;
+
+// --- PWA Install Logic ---
+let deferredPrompt;
+const installBtn = $('#install-btn');
+const iosHint = $('#ios-install-hint');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-flex';
+});
+
+installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') { console.log('User installed the app'); }
+  deferredPrompt = null;
+  installBtn.style.display = 'none';
+});
+
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+if (isIOS && !isStandalone) { iosHint.style.display = 'block'; }
+// --------------------------
 
 const MODES = {
   hd:       {h: 720, fps: 30, kbps: 1500, n: 'HD 720p'},
@@ -517,7 +558,11 @@ function mkPeer(id) {
     const st = pc.connectionState, name = 'Guest ' + id.slice(0, 3); clearTimeout(p.rt);
     if (st === 'connected') { applyPeer(p); p.tile.s.textContent = name; } else p.tile.s.textContent = name + ' (' + st + ')';
     if (st === 'disconnected' || st === 'failed') p.rt = setTimeout(() => restartIce(p), st === 'failed' ? 500 : 4000);
-    if (st === 'failed' && !hasRelay) diag('Connection failed. Try the "Force relay" option before joining.');
+    if (st === 'failed') {
+      diag('Connection failed. Retrying with compatibility mode...');
+      S.forceRelay = true; // Automatically retry with relay
+      restartIce(p, true);
+    }
   };
   reK(); refresh(); return p;
 }
@@ -712,7 +757,7 @@ function showSummary() {
 
 $('#go').onclick = async () => {
   $('#join').hidden = true; $('#app').hidden = false; $('#roominfo').hidden = false; plan(); S.t0 = performance.now(); keepAwake();
-  S.forceRelay = $('#forcerelay').checked;
+  S.forceRelay = false; // Reset relay flag on fresh join
   try { const cfg = await (await fetch('/config')).json(); ice = cfg.iceServers; hasRelay = cfg.relay; } catch { ice = [{urls: 'stun:stun.l.google.com:19302'}]; }
   local = addTile('You', true, 'me');
   if (!navigator.mediaDevices) { diag('Camera and mic need https:// or localhost. Joined as viewer only.'); }
@@ -801,7 +846,7 @@ $('#data').onclick = $('#dbar').onclick = () => { $('#sheet-data').hidden = fals
 document.querySelectorAll('[data-x]').forEach(b => b.onclick = () => extend(+b.dataset.x));
 document.querySelectorAll('.sheet').forEach(s => s.addEventListener('click', e => { if (e.target === s || e.target.closest('[data-close]')) s.hidden = true; }));
 $('#view').onclick = () => { S.view = S.view === 'focus' ? 'grid' : 'focus'; if (S.view === 'focus') S.pin = null; layout(); };
-$('#sumNew').onclick = () => { location.hash = Math.random().toString(36).slice(2, 8); location.reload(); };
+$('#sumNew').onclick = () => { location.reload(); }; // Hard refresh back to the join screen
 
 async function keepAwake() { try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch {} }
 const nudge = () => setTimeout(() => peers.forEach(p => p.pc.connectionState !== 'connected' && restartIce(p, true)), 3000);
