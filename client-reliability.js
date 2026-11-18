@@ -1,63 +1,53 @@
-/* ICE and cross-device call reliability safeguards. Loaded after the main client scripts. */
+/* Active WebRTC reliability fixes, loaded after the main inline application script. */
 (() => {
   'use strict';
 
-  // Do not turn relay-only mode on globally after one peer fails. A failed direct
-  // path should not poison subsequent calls; ICE should keep using all candidates.
-  if (typeof S !== 'undefined') {
-    try {
-      Object.defineProperty(S, 'forceRelay', {
-        configurable: false,
-        enumerable: true,
-        get: () => false,
-        set: () => {}
-      });
-    } catch (error) { console.warn('Could not keep ICE in automatic mode:', error); }
-  }
-
-  // Trickle ICE candidates can arrive while setRemoteDescription is still pending.
-  // Queue them per peer connection and apply them once the remote SDP is installed.
-  if (window.RTCPeerConnection) {
-    const proto = RTCPeerConnection.prototype;
-    if (!proto.__lowdataCandidateQueue) {
-      const originalAddIceCandidate = proto.addIceCandidate;
-      const originalSetRemoteDescription = proto.setRemoteDescription;
-      const pending = new WeakMap();
-      proto.addIceCandidate = function (candidate, ...rest) {
-        if (!this.remoteDescription) {
-          const queue = pending.get(this) || [];
-          queue.push([candidate, rest]);
-          pending.set(this, queue);
-          return Promise.resolve();
-        }
-        return originalAddIceCandidate.call(this, candidate, ...rest);
-      };
-      proto.setRemoteDescription = async function (description) {
-        const result = await originalSetRemoteDescription.call(this, description);
-        const queue = pending.get(this) || [];
-        pending.delete(this);
-        for (const [candidate, rest] of queue) {
-          try { await originalAddIceCandidate.call(this, candidate, ...rest); }
-          catch (error) { console.warn('Ignoring stale ICE candidate:', error); }
-        }
-        return result;
-      };
-      Object.defineProperty(proto, '__lowdataCandidateQueue', {value: true});
+  // Use automatic ICE selection on every fresh peer. A previous failed call must
+  // never leave the app globally pinned to relay-only transport.
+  try {
+    if (typeof S !== 'undefined') {
+      Object.defineProperty(S, 'forceRelay', {configurable: false, enumerable: true, get: () => false, set: () => {}});
     }
+  } catch (error) { console.warn('ICE policy remains on browser default:', error); }
+
+  // Both clients currently receive a welcome event at nearly the same time. Without
+  // a tie-breaker they each create an offer (offer glare), which is unreliable on
+  // mobile Safari and can leave the call stuck in signaling state. The lexically
+  // smaller random user ID is the sole offerer for each peer pair.
+  if (typeof call === 'function') {
+    const originalCall = call;
+    call = async function (peerId) {
+      if (typeof me === 'string' && me.localeCompare(peerId) > 0) return;
+      return originalCall(peerId);
+    };
   }
 
-  // Trigger ICE recovery on network changes without reloading or switching every
-  // subsequent peer to relay-only mode. The app's existing restart logic handles
-  // the actual offer/answer exchange.
-  const connection = navigator.connection;
-  if (connection && typeof peers !== 'undefined') {
-    connection.addEventListener('change', () => {
-      try {
-        peers.forEach(peer => {
-          if (peer.pc.connectionState === 'connected') return;
-          if (typeof restartIce === 'function') restartIce(peer, true);
-        });
-      } catch (error) { console.warn('ICE network-change recovery failed:', error); }
-    });
+  // Trickle ICE can deliver a candidate before remote SDP finishes installing.
+  // Queue early candidates separately for each connection and apply them in order.
+  if (window.RTCPeerConnection && !RTCPeerConnection.prototype.__lowdataCandidateQueue) {
+    const proto = RTCPeerConnection.prototype;
+    const addCandidate = proto.addIceCandidate;
+    const setRemoteDescription = proto.setRemoteDescription;
+    const queues = new WeakMap();
+    proto.addIceCandidate = function (candidate, ...rest) {
+      if (!this.remoteDescription) {
+        const queue = queues.get(this) || [];
+        queue.push([candidate, rest]);
+        queues.set(this, queue);
+        return Promise.resolve();
+      }
+      return addCandidate.call(this, candidate, ...rest);
+    };
+    proto.setRemoteDescription = async function (description) {
+      const result = await setRemoteDescription.call(this, description);
+      const queue = queues.get(this) || [];
+      queues.delete(this);
+      for (const [candidate, rest] of queue) {
+        try { await addCandidate.call(this, candidate, ...rest); }
+        catch (error) { console.debug('Ignoring invalid/stale ICE candidate:', error); }
+      }
+      return result;
+    };
+    Object.defineProperty(proto, '__lowdataCandidateQueue', {value: true});
   }
 })();
