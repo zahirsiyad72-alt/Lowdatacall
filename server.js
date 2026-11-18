@@ -55,7 +55,7 @@ const dropPeer = (room, id) => {
   clearTimeout(p.timer); peers.delete(id); peers.forEach(o => push(o.res, {type: 'leave', id}));
   if (!peers.size) rooms.delete(room);
 };
-const FILES = {'/manifest.webmanifest': 'application/manifest+json', '/sw.js': 'text/javascript; charset=utf-8', '/fixes.js': 'text/javascript; charset=utf-8', '/logo.svg': 'image/svg+xml', '/icon-192.png': 'image/png', '/icon-512.png': 'image/png'};
+const FILES = {'/manifest.webmanifest': 'application/manifest+json', '/sw.js': 'text/javascript; charset=utf-8', '/fixes.js': 'text/javascript; charset=utf-8', '/client-enhancements.js': 'text/javascript; charset=utf-8', '/logo.svg': 'image/svg+xml', '/icon-192.png': 'image/png', '/icon-512.png': 'image/png'};
 
 http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://x');
@@ -69,7 +69,7 @@ http.createServer(async (req, res) => {
     let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
     // Service workers are optional (for example on a non-secure local network).
     html = html.replace("navigator.serviceWorker.addEventListener('controllerchange',", "if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('controllerchange',");
-    html = html.replace('</body>', '<script src="/fixes.js"></script></body>');
+    html = html.replace('</body>', '<script src="/fixes.js"></script><script src="/client-enhancements.js"></script></body>');
     return res.end(html);
   }
   if (u.pathname === '/health' && req.method === 'GET') { res.writeHead(200); return res.end('ok'); }
