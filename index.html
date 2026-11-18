@@ -141,7 +141,7 @@ summary{cursor:pointer;color:var(--mut)}
       <div class="num">1</div>
       <div class="body">
         <h3>Share the invite</h3>
-        <button id="create" class="btn primary big">Create a meeting &amp; get invite link</button>
+        <button id="create" class="btn primary big">Create a meeting & get invite link</button>
         <div id="create-invite" hidden>
           <input id="pre-link" readonly style="width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);margin-top:8px">
           <div class="rowb">
@@ -201,6 +201,13 @@ summary{cursor:pointer;color:var(--mut)}
   </div>
   <div id="diag"></div>
   <div id="alert" hidden></div>
+  
+  <div id="recovery-prompt" hidden style="margin:0 8px 8px;padding:12px;border-radius:12px;background:#ecfdf5;color:#065f46;border:1px solid #6ee7b7;font-size:14px">
+    <b>Connection interrupted?</b> Don't lose what you wanted to say.<br>
+    <button class="btn primary" id="rec-voice" style="margin-top:8px">Record voice message (up to 2 min)</button>
+    <button class="btn" id="rec-cancel" style="margin-top:8px">Dismiss</button>
+  </div>
+
   <button class="dbar" id="dbar" title="Open data usage"><span id="dq">–</span><span id="du">0 MB used</span><i id="dfill"></i></button>
   <nav id="bar">
     <button id="mic" class="ctl" title="Mute / unmute"><svg class="ic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></svg><span>Mic</span></button>
@@ -214,7 +221,6 @@ summary{cursor:pointer;color:var(--mut)}
   </nav>
 </div>
 
-<!-- Usage page (not a modal): full screen, reachable from the bottom tab bar -->
 <div id="usage" hidden>
   <h2>Your data usage</h2>
   <div class="summary" id="sum-cards"></div>
@@ -231,7 +237,6 @@ summary{cursor:pointer;color:var(--mut)}
   <div class="hist" id="hist"></div>
 </div>
 
-<!-- Bottom tab bar: visible in the Usage page and the Call screen -->
 <nav class="tabs" id="tabs" hidden>
   <button class="tab" id="tab-call" data-tab="call"><i>📞</i>Call</button>
   <button class="tab" id="tab-usage" data-tab="usage"><i>📊</i>Usage</button>
@@ -245,12 +250,41 @@ summary{cursor:pointer;color:var(--mut)}
   <div class="fine">Anyone with this link can join (up to 6 people). Ask them to open it in Chrome or Safari and allow camera and microphone.</div>
 </div></div>
 
+<div class="sheet" id="sheet-recovery" hidden><div class="box">
+  <div class="sh"><b>Conversation Recovery</b><button class="x" data-close aria-label="Close">✕</button></div>
+  <p>Record a short message. It stays on your device until you choose to send it when the connection returns.</p>
+  <div id="rec-status" class="fine">Ready</div>
+  <div class="rowb">
+    <button class="btn primary" id="rec-start">Start recording</button>
+    <button class="btn" id="rec-stop" disabled>Stop</button>
+  </div>
+  <div id="rec-preview" style="margin-top:10px"></div>
+  <div class="rowb" style="margin-top:10px">
+    <button class="btn primary" id="rec-save" disabled>Save locally</button>
+    <button class="btn" id="rec-discard">Discard</button>
+  </div>
+  <div class="fine">Voice only for lower data. Max 2 minutes. Messages expire after 24 hours.</div>
+</div></div>
+
+<div class="sheet" id="sheet-pending" hidden><div class="box">
+  <div class="sh"><b>Pending recovery messages</b><button class="x" data-close aria-label="Close">✕</button></div>
+  <div id="pending-list"></div>
+  <div class="fine">These were recorded while offline. Send them when connected.</div>
+</div></div>
+
 <div class="sheet" id="sheet-data" hidden><div class="box">
   <div class="sh"><b>Data usage</b><button class="x" data-close aria-label="Close">✕</button></div>
 
-  <div class="fine"><b>My data (only you see this)</b></div>
+  <div class="fine"><b>My data efficiency (private to you)</b></div>
   <div class="big" id="stext">0 MB used</div>
   <div class="bar"><i id="sfill"></i></div>
+  <div class="kv" style="margin-top:8px">
+    <div>Measured usage<b id="measured">–</b></div>
+    <div>Est. remaining<b id="remaining">–</b></div>
+    <div>Avg rate<b id="avgrate">–</b></div>
+    <div>Est. time left<b id="timeleft">–</b></div>
+  </div>
+  <div class="fine">Measured application network usage (WebRTC). Estimated carrier-billed usage may differ slightly due to headers, VPN, or other apps.</div>
   <div class="fine">Extend your budget</div>
   <div class="rowb">
     <button class="btn" data-x="50">+50 MB</button><button class="btn" data-x="100">+100 MB</button><button class="btn" data-x="250">+250 MB</button><button class="btn" data-x="0">No limit</button>
@@ -290,7 +324,7 @@ summary{cursor:pointer;color:var(--mut)}
     <button class="btn primary" id="sumNew">Start another call</button>
     <button class="btn" id="sumUsage">See all usage</button>
   </div>
-  <div class="fine">Baseline assumes a normal HD video call of the same duration at ~1,400 MB/hour for 1-to-1. Your actual usage is measured from WebRTC stats. Carrier-billed usage can differ slightly.</div>
+  <div class="fine">Baseline assumes a normal HD video call of the same duration at ~1,400 MB/hour for 1-to-1. Your actual usage is measured from WebRTC stats. Carrier-billed usage may differ slightly.</div>
 </div></div>
 
 <script>
@@ -310,7 +344,6 @@ const BASELINE_KBPS = 1400;
 const HIST_KEY = 'ld_history_v1';
 const HIST_MAX = 200;
 
-// ---- History store: local only, never sent to the server ----
 function loadHistory() { try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch { return []; } }
 function saveHistory(list) { try { localStorage.setItem(HIST_KEY, JSON.stringify(list.slice(0, HIST_MAX))); } catch {} }
 function addHistory(rec) { const l = loadHistory(); l.unshift(rec); saveHistory(l); }
@@ -337,7 +370,10 @@ const accountant = {
       if (r.type === 'inbound-rtp') {
         const b = (r.bytesReceived || 0), prev = p.prev['in_' + r.id] || 0, delta = Math.max(0, b - prev); p.prev['in_' + r.id] = b;
         if (r.kind === 'audio') { p.audioRecv += delta; this.session.audioRecv += delta; }
-        else if (r.kind === 'video') { p.videoRecv += delta; this.session.videoRecv += delta; }
+        else if (r.kind === 'video') {
+          if (r.contentType === 'screenshare') { p.screenRecv += delta; this.session.screenRecv += delta; }
+          else { p.videoRecv += delta; this.session.videoRecv += delta; }
+        }
       }
       if (r.type === 'transport') {
         const bs = (r.bytesSent || 0), br = (r.bytesReceived || 0), prevS = p.prev['t_s'] || 0, prevR = p.prev['t_r'] || 0;
@@ -354,10 +390,48 @@ const accountant = {
       this.lastTotals = {sent, recv}; this.lastSample = now;
     }
   },
-  totalSent() { return this.session.audioSent + this.session.videoSent + this.session.screenSent; },
-  totalRecv() { return this.session.audioRecv + this.session.videoRecv + this.session.screenRecv; },
+  totalSent() { return this.session.audioSent + this.session.videoSent + this.session.screenSent + this.session.transportSent; },
+  totalRecv() { return this.session.audioRecv + this.session.videoRecv + this.session.screenRecv + this.session.transportRecv; },
   total() { return this.totalSent() + this.totalRecv(); },
   snapshot() { return {ts: new Date().toISOString(), session: {...this.session}, total: this.total(), rate: {...this.lastRate}}; }
+};
+
+const recovery = {
+  recordings: [], mediaRecorder: null, chunks: [], stream: null, lastBlob: null,
+  async start() {
+    try {
+      this.stream = await navigator.mediaDevices.getUserMedia({audio: true, video: false});
+      this.chunks = [];
+      this.mediaRecorder = new MediaRecorder(this.stream, {mimeType: 'audio/webm;codecs=opus'});
+      this.mediaRecorder.ondataavailable = e => { if (e.data.size) this.chunks.push(e.data); };
+      this.mediaRecorder.start();
+      $('#rec-status').textContent = 'Recording…';
+      $('#rec-start').disabled = true;
+      $('#rec-stop').disabled = false;
+    } catch (e) { $('#rec-status').textContent = 'Microphone error: ' + e.message; }
+  },
+  stop() {
+    if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
+      this.mediaRecorder.stop();
+      this.mediaRecorder.onstop = () => {
+        const blob = new Blob(this.chunks, {type: 'audio/webm'});
+        const url = URL.createObjectURL(blob);
+        $('#rec-preview').innerHTML = '<audio controls src="' + url + '"></audio>';
+        this.lastBlob = blob;
+        $('#rec-save').disabled = false;
+        $('#rec-status').textContent = 'Recording ready (' + Math.round(blob.size / 1024) + ' KB)';
+        this.stream.getTracks().forEach(t => t.stop());
+      };
+    }
+  },
+  save() {
+    if (!this.lastBlob) return;
+    const rec = {id: Date.now(), blob: this.lastBlob, ts: Date.now(), type: 'voice'};
+    this.recordings.push(rec);
+    $('#sheet-recovery').hidden = true;
+    $('#recovery-prompt').hidden = true;
+    alert('Message saved locally. It will be available to send when connection returns.');
+  }
 };
 
 const peers = new Map();
@@ -474,7 +548,6 @@ async function onSignal(from, d) {
 }
 function drop(id) { const p = peers.get(id); if (!p) return; p.pc.close(); p.tile.el.remove(); peers.delete(id); accountant.peers.delete(id); reK(); refresh(); }
 
-// ---- Tabs ----
 function showTab(name) {
   if (name === 'usage') {
     $('#app').hidden = true; $('#usage').hidden = false; $('#tabs').hidden = false;
@@ -490,7 +563,6 @@ $('#tab-call').onclick = () => showTab('call');
 $('#tab-usage').onclick = () => showTab('usage');
 $('#sumUsage').onclick = () => { $('#sheet-summary').hidden = true; showTab('usage'); };
 
-// ---- Usage page rendering ----
 let usageFilter = 7;
 document.querySelectorAll('#filters .btn').forEach(b => b.onclick = () => {
   usageFilter = +b.dataset.f;
@@ -523,7 +595,6 @@ function renderUsage() {
     ['Time in calls', fmtDur(totalSeconds)]
   ].map(([k, v]) => '<div class="card"><div>' + k + '</div><b>' + v + '</b></div>').join('');
 
-  // 14-day chart, independent of filter
   const days = 14, buckets = new Array(days).fill(0);
   const labels = [];
   for (let i = days - 1; i >= 0; i--) {
@@ -561,7 +632,6 @@ function renderUsage() {
   document.querySelectorAll('#hist .row').forEach(row => row.onclick = () => row.classList.toggle('open'));
 }
 
-// ---- Budget rendering ----
 function renderBudget() {
   const used = (TU + TD);
   const usedMB = used / 1e6;
@@ -576,6 +646,12 @@ function renderBudget() {
   if (sfill) { sfill.style.width = pct + '%'; sfill.dataset.lvl = lvl; }
   if (dfill) { dfill.style.width = pct + '%'; }
   if (dbar) dbar.dataset.lvl = lvl;
+
+  const rate = (accountant.lastRate.sent + accountant.lastRate.recv) / 1e6;
+  $('#measured').textContent = usedMB.toFixed(1) + ' MB';
+  $('#remaining').textContent = S.budget ? Math.max(0, S.budget - usedMB).toFixed(1) + ' MB' : 'No limit';
+  $('#avgrate').textContent = rate > 0 ? (rate * 60).toFixed(2) + ' MB/min' : '–';
+  $('#timeleft').textContent = eta !== null ? Math.round(eta) + ' min' : '–';
 }
 
 let ema = 0;
@@ -599,7 +675,6 @@ const alertSoon = (min, left) => showAlert('Heads up: about ' + min + ' min of d
 const alertLimit = () => showAlert('Data limit reached. Video is paused to protect your data; audio continues.', [{t: 'Extend +100 MB', f: () => extend(100)}, {t: '+250 MB', f: () => extend(250)}], 'red');
 function announce() { peers.forEach(p => sig(p.id, {ctl: {sharing: !!(S.share && scr)}})); }
 
-// ---- Post-call summary: saves the record to local history, then shows the card ----
 function showSummary() {
   S.ended = true;
   const seconds = Math.max(1, (performance.now() - S.t0) / 1000);
@@ -609,7 +684,6 @@ function showSummary() {
   const savedMB = Math.max(0, baselineMB - usedMB);
   const savedPct = baselineMB > 0 ? Math.round(savedMB / baselineMB * 100) : 0;
 
-  // Persist one record. The record id is random, and the store is local only.
   addHistory({
     id: rid(6), endedAt: new Date().toISOString(), seconds: Math.round(seconds), people,
     usedMB: +usedMB.toFixed(2), baselineMB: +baselineMB.toFixed(2), savedMB: +savedMB.toFixed(2), savedPct,
@@ -635,7 +709,81 @@ function showSummary() {
   if (es) es.close(); peers.forEach(p => p.pc.close());
   [mic, cam, scr].forEach(t => t && t.stop());
 }
-$('#sumNew').onclick = () => { location.hash = Math.random().toString(36).slice(2, 8); location.reload(); };
+
+$('#go').onclick = async () => {
+  $('#join').hidden = true; $('#app').hidden = false; $('#roominfo').hidden = false; plan(); S.t0 = performance.now(); keepAwake();
+  S.forceRelay = $('#forcerelay').checked;
+  try { const cfg = await (await fetch('/config')).json(); ice = cfg.iceServers; hasRelay = cfg.relay; } catch { ice = [{urls: 'stun:stun.l.google.com:19302'}]; }
+  local = addTile('You', true, 'me');
+  if (!navigator.mediaDevices) { diag('Camera and mic need https:// or localhost. Joined as viewer only.'); }
+  else { try { mic = (await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: true, noiseSuppression: true, autoGainControl: true}})).getAudioTracks()[0]; } catch (e) { diag('Mic: ' + e.name + ' – ' + e.message); } if (!$('#camoff').checked) await setCam(true); }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) $('#share').hidden = true;
+  refresh();
+  es = new EventSource('/events?room=' + encodeURIComponent(room) + '&id=' + me + '&token=' + token);
+  es.onmessage = e => {
+    const m = JSON.parse(e.data);
+    if (m.type === 'welcome') { [...peers.keys()].filter(id => !m.peers.includes(id)).forEach(drop); m.peers.forEach(id => { const p = peers.get(id); if (p && ['failed', 'closed'].includes(p.pc.connectionState)) drop(id); }); m.peers.filter(id => !peers.has(id)).forEach(call); }
+    else if (m.type === 'signal') onSignal(m.from, m.data);
+    else if (m.type === 'leave') drop(m.id);
+    else if (m.type === 'full') { diag('This room is full (max 6 people).'); es.close(); }
+  };
+  es.onerror = () => diag('Reconnecting to server…'); es.onopen = () => diag('');
+};
+
+$('#mic').onclick = () => { if (mic) { mic.enabled = !mic.enabled; refresh(); } };
+$('#cam').onclick = () => setCam(!cam);
+$('#share').onclick = async () => {
+  if (S.share && scr) { const old = scr; scr = null; S.share = false; announce(); refresh(); try { old.getTracks().forEach(t => t.stop()); } catch {} return; }
+  try { const stream = await navigator.mediaDevices.getDisplayMedia({video: {frameRate: 5}}); const track = stream.getVideoTracks()[0]; if (!track) return; track.onended = () => { if (scr !== track) return; scr = null; S.share = false; announce(); refresh(); }; scr = track; S.share = true; announce(); refresh(); }
+  catch (e) { diag('Screen share: ' + e.message); }
+};
+$('#recv').onclick = () => { S.recv = !S.recv; refresh(); peers.forEach(p => sig(p.id, {ctl: {video: S.recv}})); };
+$('#mode').onchange = e => { S.mode = e.target.value; reK(); refresh(); };
+$('#leave').onclick = () => { showSummary(); };
+
+let speakerOn = false;
+const speakerBtn = $('#speaker');
+if (!('setSinkId' in HTMLMediaElement.prototype) || /iPhone|iPad/.test(navigator.userAgent)) speakerBtn.hidden = true;
+else speakerBtn.onclick = async () => {
+  try {
+    if (!speakerOn) {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const outputs = devices.filter(d => d.kind === 'audiooutput');
+      const speaker = outputs.find(d => /speaker|default/i.test(d.label)) || outputs[0];
+      if (!speaker) return;
+      const audioEl = document.querySelector('#grid video:not(.mirror)');
+      if (audioEl) { await audioEl.setSinkId(speaker.deviceId); speakerOn = true; speakerBtn.classList.add('on'); }
+    } else {
+      const audioEl = document.querySelector('#grid video:not(.mirror)');
+      if (audioEl) { await audioEl.setSinkId(''); speakerOn = false; speakerBtn.classList.remove('on'); }
+    }
+  } catch (e) { diag('Speaker switch: ' + e.message); }
+};
+
+function plan() {
+  S.mobile = $('#mobile').checked; S.budget = +$('#budget').value; S.mins = +$('#mins').value;
+  S.cap = S.budget ? S.budget / (S.mins / 60) : 0; S.exhausted = false; S.warned = false; S.k = null;
+  const m = MODES[qKey()];
+  $('#hint').textContent = (S.budget ? S.budget + ' MB over ' + S.mins + ' min' : 'No data limit') + ' → Auto will use ' + (m ? m.n : 'Audio only') + '.' + (m ? '' : ' Try a bigger budget or a shorter meeting for video.');
+}
+
+$('#rec-voice').onclick = () => { $('#sheet-recovery').hidden = false; };
+$('#rec-cancel').onclick = () => { $('#recovery-prompt').hidden = true; };
+$('#rec-start').onclick = () => recovery.start();
+$('#rec-stop').onclick = () => recovery.stop();
+$('#rec-save').onclick = () => recovery.save();
+$('#rec-discard').onclick = () => { $('#sheet-recovery').hidden = true; recovery.lastBlob = null; };
+$('#sheet-recovery .x').onclick = () => { $('#sheet-recovery').hidden = true; recovery.lastBlob = null; };
+
+function checkRecovery() {
+  const anyDisconnected = [...peers.values()].some(p => p.pc.connectionState === 'disconnected' || p.pc.connectionState === 'failed');
+  if (anyDisconnected && peers.size && !$('#app').hidden) {
+    $('#recovery-prompt').hidden = false;
+  } else {
+    $('#recovery-prompt').hidden = true;
+  }
+}
+setInterval(checkRecovery, 3000);
 
 const inviteURL = () => location.origin + location.pathname + '#' + room;
 const inviteText = () => 'Join my video call (it uses very little data): ' + inviteURL();
@@ -653,6 +801,7 @@ $('#data').onclick = $('#dbar').onclick = () => { $('#sheet-data').hidden = fals
 document.querySelectorAll('[data-x]').forEach(b => b.onclick = () => extend(+b.dataset.x));
 document.querySelectorAll('.sheet').forEach(s => s.addEventListener('click', e => { if (e.target === s || e.target.closest('[data-close]')) s.hidden = true; }));
 $('#view').onclick = () => { S.view = S.view === 'focus' ? 'grid' : 'focus'; if (S.view === 'focus') S.pin = null; layout(); };
+$('#sumNew').onclick = () => { location.hash = Math.random().toString(36).slice(2, 8); location.reload(); };
 
 async function keepAwake() { try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch {} }
 const nudge = () => setTimeout(() => peers.forEach(p => p.pc.connectionState !== 'connected' && restartIce(p, true)), 3000);
