@@ -114,6 +114,62 @@
   const grid = $('#grid');
   if (grid) new MutationObserver(applySpeakerState).observe(grid, {childList: true, subtree: true});
 
+  // The connection test gathers real ICE candidates, which verifies actual STUN/TURN
+  // reachability from this browser rather than only checking whether /config responds.
+  async function gatherCandidates(servers, timeoutMs = 10000) {
+    const pc = new RTCPeerConnection({iceServers: servers, iceCandidatePoolSize: 0});
+    const types = new Set();
+    pc.onicecandidate = event => {
+      if (event.candidate) {
+        const match = event.candidate.candidate.match(/\btyp\s+(host|srflx|prflx|relay)\b/);
+        if (match) types.add(match[1]);
+      }
+    };
+    try {
+      pc.createDataChannel('connection-test');
+      await pc.setLocalDescription(await pc.createOffer());
+      if (pc.iceGatheringState !== 'complete') {
+        await new Promise(resolve => {
+          const timer = setTimeout(resolve, timeoutMs);
+          pc.addEventListener('icegatheringstatechange', () => {
+            if (pc.iceGatheringState === 'complete') { clearTimeout(timer); resolve(); }
+          });
+        });
+      }
+      return types;
+    } finally { pc.close(); }
+  }
+  const testButton = $('#test'), testOutput = $('#testout');
+  if (testButton && testOutput) testButton.onclick = async () => {
+    if (!window.isSecureContext || !('RTCPeerConnection' in window)) {
+      testOutput.textContent = 'Connection testing needs a supported browser on HTTPS (or localhost).';
+      return;
+    }
+    testButton.disabled = true;
+    testOutput.textContent = 'Checking your network and relay…';
+    try {
+      const response = await fetch('/config', {cache: 'no-store'});
+      if (!response.ok) throw new Error('Server configuration returned HTTP ' + response.status);
+      const config = await response.json();
+      const allServers = Array.isArray(config.iceServers) ? config.iceServers : [];
+      const turnServers = allServers.filter(server => [].concat(server.urls || []).some(url => /^turns?:/i.test(url)));
+      const directTypes = await gatherCandidates(allServers.filter(server => ![].concat(server.urls || []).some(url => /^turns?:/i.test(url))));
+      const hasDirect = directTypes.has('srflx') || directTypes.has('host');
+      let relayWorks = false;
+      if (turnServers.length) {
+        const relayTypes = await gatherCandidates(turnServers);
+        relayWorks = relayTypes.has('relay');
+      }
+      const result = [];
+      result.push(hasDirect ? 'Direct connection: reachable.' : 'Direct connection: no usable ICE candidate found.');
+      result.push(turnServers.length ? (relayWorks ? 'TURN relay: working.' : 'TURN relay: not reachable; check TURN credentials/firewall.') : 'TURN relay: not configured on the server. Calls on restrictive mobile networks may fail.');
+      testOutput.textContent = result.join(' ');
+    } catch (error) {
+      console.error('Connection test failed:', error);
+      testOutput.textContent = 'Connection test failed: ' + (error.message || 'check your internet connection and try again.');
+    } finally { testButton.disabled = false; }
+  };
+
   // Make leaving immediate and dependable even if the original inline handler has
   // partially failed. sendBeacon works while the page is navigating away.
   const leave = $('#leave');
