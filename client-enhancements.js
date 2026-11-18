@@ -1,37 +1,43 @@
-/* Follow-up UX fixes: notifications, call summaries, and responsive call controls. */
+/* Follow-up UX fixes: notifications, readable mobile video, and dependable call exit. */
 (() => {
   'use strict';
   const $ = selector => document.querySelector(selector);
 
-  // Keep the app usable on small phone screens: stack the meeting layout, give
-  // controls comfortably large touch targets, and hide screen sharing on mobile.
   const responsiveStyle = document.createElement('style');
   responsiveStyle.id = 'lowdata-responsive-style';
   responsiveStyle.textContent = `
-    #bar .ctl { min-width: 0; min-height: 48px; touch-action: manipulation; }
-    #leave { min-height: 48px; font-weight: 700; }
     button { touch-action: manipulation; }
+    #bar .ctl { min-width: 0; min-height: 48px; }
+    #leave { min-height: 48px; font-weight: 700; }
     @media (max-width: 700px) {
-      body { height: 100vh; height: 100svh; min-height: 100%; }
-      header { gap: 8px; padding-left: 10px; padding-right: 10px; }
+      html, body { width: 100%; height: 100%; min-height: 100%; overflow: hidden; }
+      body { height: 100vh; height: 100dvh; }
+      header { flex: 0 0 auto; gap: 8px; padding-left: 10px; padding-right: 10px; }
       #roominfo { gap: 4px; }
       #roominfo .btn { padding: 8px; }
-      #app { min-height: 0; padding-bottom: env(safe-area-inset-bottom); }
-      #grid { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 6px; }
-      #grid.focus { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); }
-      #grid.focus .tile { height: 64px; }
-      #grid.focus .tile.pin { height: auto; }
-      #bar { position: relative; z-index: 5; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 8px; padding-bottom: max(8px, env(safe-area-inset-bottom)); }
-      #bar .ctl { min-height: 52px; padding: 8px 2px; font-size: 11px; }
+      #app { position: relative; flex: 1 1 auto; min-height: 0; padding: 0 0 env(safe-area-inset-bottom); overflow: hidden; }
+      #grid { flex: 1 1 auto; min-height: 0; width: 100%; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 4px; padding: 4px; overflow: hidden; align-content: stretch; }
+      #grid.focus { grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); grid-template-rows: minmax(0, 1fr) 68px; }
+      #grid.focus .tile { height: 64px; min-height: 0; }
+      #grid.focus .tile.pin { grid-column: 1 / -1; grid-row: 1; height: 100%; min-height: 0; }
+      #grid.focus .tile:not(.pin) video { object-fit: cover; }
+      #grid.focus .tile.pin video, #grid:not(.focus) .tile video { object-fit: contain; }
+      #grid .empty { padding: 14px 10px; }
+      #diag { position: relative; z-index: 4; max-height: 48px; overflow: auto; background: var(--bg); }
+      #dbar { flex: 0 0 auto; min-height: 40px; margin-bottom: 4px; }
+      #bar { position: fixed; z-index: 45; left: 8px; right: 8px; bottom: max(8px, env(safe-area-inset-bottom)); display: flex; justify-content: flex-end; align-items: flex-end; gap: 8px; padding: 8px; border: 0; background: transparent; pointer-events: none; }
+      #bar > * { pointer-events: auto; }
+      #bar .ctl:not(#leave):not(#controls-toggle) { display: none; }
+      #bar.controls-open { left: 8px; right: 8px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 8px; border: 1px solid var(--bd); border-radius: 14px; background: var(--card); box-shadow: 0 4px 18px #0003; }
+      #bar.controls-open .ctl:not(#leave):not(#controls-toggle) { display: flex; }
+      #bar .ctl { min-height: 48px; padding: 6px 2px; font-size: 11px; }
       #bar #share { display: none !important; }
-      #leave { order: 99; }
-      #dbar { min-height: 44px; }
-      .sheet { z-index: 30; }
+      #controls-toggle { min-width: 56px; min-height: 52px; border: 1px solid var(--bd); border-radius: 12px; background: var(--card); color: var(--fg); font-weight: 700; box-shadow: 0 3px 12px #0003; }
+      #leave { position: fixed; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 60; width: 58px; height: 58px; min-height: 58px; padding: 4px; border: 2px solid #fff; border-radius: 50%; display: flex !important; flex-direction: column; gap: 0; box-shadow: 0 3px 14px #0005; }
+      #bar.controls-open #leave { position: fixed; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); }
       #incoming-call { z-index: 100; }
-      .tabs { padding-bottom: max(8px, env(safe-area-inset-bottom)); }
-      #home-view, #contacts-view, #usage-view { padding-bottom: max(88px, calc(72px + env(safe-area-inset-bottom))); }
-      .grid-2 { gap: 8px; }
-      .panel { padding: 12px; }
+      .sheet { z-index: 70; }
+      #home-view, #contacts-view, #usage-view { padding-bottom: 88px; }
     }
     @media (min-width: 701px) {
       #bar { grid-template-columns: repeat(8, minmax(64px, 1fr)); }
@@ -40,9 +46,35 @@
   `;
   document.head.appendChild(responsiveStyle);
 
-  // Notifications require an explicit gesture in modern browsers. Ask on demand.
+  // On phones, keep only Leave and a menu toggle visible. The menu exposes every
+  // other supported control without shrinking the call video into a tiny tile.
+  const controlBar = $('#bar');
+  if (controlBar && !$('#controls-toggle')) {
+    const toggle = document.createElement('button');
+    toggle.id = 'controls-toggle';
+    toggle.type = 'button';
+    toggle.textContent = 'Controls';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Show call controls');
+    controlBar.appendChild(toggle);
+    toggle.addEventListener('click', () => {
+      const open = controlBar.classList.toggle('controls-open');
+      toggle.textContent = open ? 'Close' : 'Controls';
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Hide call controls' : 'Show call controls');
+    });
+    controlBar.querySelectorAll('.ctl:not(#leave)').forEach(button => button.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 700px)').matches) {
+        controlBar.classList.remove('controls-open');
+        toggle.textContent = 'Controls';
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    }));
+  }
+
+  // Provide a user-initiated notification permission request.
   const panel = $('#testout')?.parentElement;
-  if (panel && 'Notification' in window && Notification.permission !== 'granted') {
+  if (panel && 'Notification' in window && Notification.permission !== 'granted' && !$('#enable-notifications')) {
     const notificationButton = document.createElement('button');
     notificationButton.id = 'enable-notifications';
     notificationButton.className = 'btn outline';
@@ -59,9 +91,6 @@
     };
   }
 
-  // Incoming-call overlay is already shown by the app's EventSource handler. Add
-  // a system notification only when the page is in the background and permission
-  // has been granted by the user.
   if (typeof globalEs !== 'undefined' && globalEs && 'Notification' in window) {
     globalEs.addEventListener('message', event => {
       let message;
@@ -77,15 +106,19 @@
     });
   }
 
-  // Ensure the Leave action remains responsive, including on mobile and while the
-  // connection is in a failed state. Save a local call summary before closing tracks.
   const leaveButton = $('#leave');
   if (!leaveButton) return;
-  let leaving = false;
-  leaveButton.onclick = event => {
-    event?.preventDefault();
-    if (leaving) return;
-    leaving = true;
+  leaveButton.type = 'button';
+  leaveButton.disabled = false;
+  leaveButton.removeAttribute('aria-busy');
+  leaveButton.style.pointerEvents = 'auto';
+  leaveButton.style.touchAction = 'manipulation';
+  let leaveInProgress = false;
+
+  const formatMB = value => value >= 1000 ? (value / 1000).toFixed(1) + ' GB' : value.toFixed(1) + ' MB';
+  const finishCall = () => {
+    if (leaveInProgress) return;
+    leaveInProgress = true;
     leaveButton.disabled = true;
     leaveButton.setAttribute('aria-busy', 'true');
 
@@ -97,31 +130,27 @@
         const baselineMB = seconds * (typeof BASELINE_KBPS === 'number' ? BASELINE_KBPS : 1400) / 8 / 1000;
         const savedMB = Math.max(0, baselineMB - usedMB);
         const savedPct = baselineMB ? Math.max(0, Math.min(100, Math.round(savedMB / baselineMB * 100))) : 0;
-        const fmt = value => value >= 1000 ? (value / 1000).toFixed(1) + ' GB' : value.toFixed(1) + ' MB';
-        const duration = value => value < 60 ? Math.round(value) + ' sec' : Math.floor(value / 60) + ' min ' + Math.round(value % 60) + ' sec';
+        const duration = seconds < 60 ? Math.round(seconds) + ' sec' : Math.floor(seconds / 60) + ' min ' + Math.round(seconds % 60) + ' sec';
         const categories = {
           audio: ((totals.audioSent || 0) + (totals.audioRecv || 0)) / 1e6,
           video: ((totals.videoSent || 0) + (totals.videoRecv || 0)) / 1e6,
           slides: ((totals.screenSent || 0) + (totals.screenRecv || 0)) / 1e6,
           transport: ((totals.transportSent || 0) + (totals.transportRecv || 0)) / 1e6
         };
-        const record = {
-          id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
-          endedAt: new Date().toISOString(), seconds, usedMB, baselineMB, savedMB, savedPct,
-          people: (typeof peers !== 'undefined' ? peers.size : 0) + 1, categories
-        };
+        const record = {id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), endedAt: new Date().toISOString(), seconds, usedMB, baselineMB, savedMB, savedPct, people: (typeof peers !== 'undefined' ? peers.size : 0) + 1, categories};
         if (typeof addHistory === 'function') addHistory(record);
-        if ($('#sumSaved')) $('#sumSaved').textContent = fmt(savedMB) + ' saved';
-        if ($('#sumSub')) $('#sumSub').textContent = 'Measured usage: ' + fmt(usedMB) + ' · estimated HD baseline: ' + fmt(baselineMB) + ' (' + savedPct + '% less).';
-        if ($('#sumDur')) $('#sumDur').textContent = duration(seconds);
-        if ($('#sumUsed')) $('#sumUsed').textContent = fmt(usedMB);
-        if ($('#sumBase')) $('#sumBase').textContent = fmt(baselineMB);
+        if ($('#sumSaved')) $('#sumSaved').textContent = formatMB(savedMB) + ' saved';
+        if ($('#sumSub')) $('#sumSub').textContent = 'Measured usage: ' + formatMB(usedMB) + ' · estimated HD baseline: ' + formatMB(baselineMB) + ' (' + savedPct + '% less).';
+        if ($('#sumDur')) $('#sumDur').textContent = duration;
+        if ($('#sumUsed')) $('#sumUsed').textContent = formatMB(usedMB);
+        if ($('#sumBase')) $('#sumBase').textContent = formatMB(baselineMB);
         if ($('#sumPeople')) $('#sumPeople').textContent = String(record.people);
-        if ($('#sumCats')) $('#sumCats').textContent = 'Audio ' + fmt(categories.audio) + ' · Video ' + fmt(categories.video) + ' · Slides ' + fmt(categories.slides) + ' · Transport ' + fmt(categories.transport);
+        if ($('#sumCats')) $('#sumCats').textContent = 'Audio ' + formatMB(categories.audio) + ' · Video ' + formatMB(categories.video) + ' · Slides ' + formatMB(categories.slides) + ' · Transport ' + formatMB(categories.transport);
       }
     } catch (error) { console.warn('Could not save call summary:', error); }
 
-    // Beacon is sent before tearing down the stream, and fallback fetch is kept alive.
+    // Use the room's beacon before teardown. Local cleanup is independent of
+    // network/server state so a failed call can always be exited on mobile.
     try {
       const payload = JSON.stringify({room, id: me, token});
       if (!navigator.sendBeacon || !navigator.sendBeacon('/leave', new Blob([payload], {type: 'application/json'}))) {
@@ -130,16 +159,37 @@
     } catch (error) { console.warn('Could not notify room of leave:', error); }
     try { if (typeof es !== 'undefined' && es) es.close(); } catch {}
     try { if (typeof peers !== 'undefined') peers.forEach(peer => peer.pc.close()); } catch {}
-    try { [mic, cam, scr].forEach(track => track && track.stop()); } catch {}
+    try { if (typeof mic !== 'undefined' && mic) mic.stop(); } catch {}
+    try { if (typeof cam !== 'undefined' && cam) cam.stop(); } catch {}
+    try { if (typeof scr !== 'undefined' && scr) scr.stop(); } catch {}
     try { if (typeof wake !== 'undefined' && wake) wake.release(); } catch {}
     try { if (typeof S !== 'undefined') S.ended = true; } catch {}
 
-    if (typeof showTab === 'function') showTab('home');
+    try { if (typeof showTab === 'function') showTab('home'); } catch {}
     const summary = $('#sheet-summary');
     if (summary) summary.hidden = false;
     leaveButton.disabled = false;
     leaveButton.removeAttribute('aria-busy');
+    leaveInProgress = false;
+    if (controlBar) controlBar.classList.remove('controls-open');
+    const toggle = $('#controls-toggle');
+    if (toggle) { toggle.textContent = 'Controls'; toggle.setAttribute('aria-expanded', 'false'); }
   };
+
+  // Bind direct pointer/touch as well as click so mobile WebViews that drop a
+  // synthesized click still run cleanup. Suppress the subsequent duplicate click.
+  let lastPointerLeave = 0;
+  const directLeave = event => {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
+    lastPointerLeave = Date.now();
+    finishCall();
+  };
+  leaveButton.addEventListener('pointerup', directLeave, {passive: false});
+  leaveButton.addEventListener('touchend', directLeave, {passive: false});
+  leaveButton.addEventListener('click', event => {
+    if (Date.now() - lastPointerLeave < 800) { event.preventDefault(); event.stopPropagation(); return; }
+    directLeave(event);
+  });
 
   const backHome = $('#sumNew');
   if (backHome) backHome.onclick = () => {
