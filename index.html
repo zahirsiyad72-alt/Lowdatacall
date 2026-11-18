@@ -9,39 +9,44 @@
 <link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="theme-color" content="#0f766e">
 <style>
-:root{--bg:#f4f7f6;--fg:#10211f;--mut:#5b6b68;--card:#fff;--acc:#0f766e;--onacc:#fff;--bd:#d9e2df;--warn:#b45309;--off:#dc2626;--ok:#16a34a}
-@media(prefers-color-scheme:dark){:root{--bg:#0b1412;--fg:#e8f1ef;--mut:#8aa19c;--card:#13211e;--acc:#2dd4bf;--onacc:#04201c;--bd:#243430;--warn:#f59e0b;--off:#f87171;--ok:#4ade80}}
+:root{--bg:#f4f7f6;--fg:#10211f;--mut:#5b6b68;--card:#fff;--acc:#0f766e;--onacc:#fff;--bd:#d9e2df;--warn:#b45309;--off:#dc2626;--ok:#16a34a;--shadow:0 4px 12px rgba(0,0,0,0.05)}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1412;--fg:#e8f1ef;--mut:#8aa19c;--card:#13211e;--acc:#2dd4bf;--onacc:#04201c;--bd:#243430;--warn:#f59e0b;--off:#f87171;--ok:#4ade80;--shadow:0 4px 12px rgba(0,0,0,0.2)}}
 *{box-sizing:border-box}html,body{height:100%}
 body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--fg);display:flex;flex-direction:column;height:100dvh}
-header{display:flex;align-items:center;gap:12px;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));border-bottom:1px solid var(--bd);background:var(--card)}
+header{display:flex;align-items:center;gap:12px;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));border-bottom:1px solid var(--bd);background:var(--card)}
 .brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:18px;letter-spacing:-.2px;margin-right:auto}
 .brand em{font-style:normal;font-weight:400;color:var(--mut)}.logo{width:30px;height:30px;flex:none}
 #roominfo{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut)}
 code{background:var(--bg);border:1px solid var(--bd);padding:2px 8px;border-radius:6px;color:var(--fg)}
 button,select,input{font:inherit;color:var(--fg)}
-.btn{padding:9px 14px;border:1px solid var(--bd);border-radius:10px;background:var(--card);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn{padding:10px 16px;border:1px solid var(--bd);border-radius:10px;background:var(--card);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:500;transition:background 0.2s}
 .btn.primary{background:var(--acc);color:var(--onacc);border-color:var(--acc);font-weight:600}
-.btn.big{padding:13px 28px;font-size:16px;width:100%}
-.ic{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.btn.big{padding:14px 28px;font-size:16px;width:100%}
+.btn.outline{background:transparent;border-color:var(--acc);color:var(--acc)}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .slash{display:none}.off .slash{display:inline}
-#join{flex:1;overflow:auto;max-width:560px;margin:0 auto;padding:18px 18px 30px;width:100%}
-.hero{text-align:center;margin-bottom:14px}.hero .logo{width:56px;height:56px;margin-bottom:4px}
-.hero h1{margin:0;font-size:26px;letter-spacing:-.6px}.hero h1 span{font-weight:400;color:var(--mut)}
-.tag{font-size:16px;color:var(--acc);font-weight:600;margin:2px 0 6px}.hero p{margin:0;color:var(--mut);font-size:14px}
-.panel{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}
-.meet{font-size:13px;color:var(--mut);margin-bottom:10px}.meet a{color:var(--acc)}
-.step{display:flex;gap:10px;align-items:flex-start;margin:14px 0}
-.step .num{width:24px;height:24px;border-radius:50%;background:var(--acc);color:var(--onacc);font-size:13px;font-weight:700;display:grid;place-items:center;flex:none;margin-top:2px}
-.step .body{flex:1;min-width:0}.step .body h3{margin:0 0 6px;font-size:15px}
-.fld{display:block;font-size:13px;color:var(--mut);margin-bottom:10px}
-.fld select{display:block;width:100%;margin-top:4px;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.hint{font-size:13px;color:var(--acc);background:var(--bg);border-radius:10px;padding:8px 10px;margin-bottom:10px}
-label.opt{display:flex;gap:8px;align-items:center;margin:8px 0;font-size:14px}
-.fine{font-size:12px;color:var(--mut);margin:6px 2px}
-details{margin-top:12px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:8px 14px;font-size:14px}
-summary{cursor:pointer;color:var(--mut)}
+
+/* Views */
+#home-view{flex:1;overflow:auto;max-width:560px;margin:0 auto;padding:20px 16px 80px;width:100%}
+#contacts-view{flex:1;overflow:auto;max-width:560px;margin:0 auto;padding:20px 16px 80px;width:100%}
+#usage-view{flex:1;overflow:auto;max-width:720px;margin:0 auto;padding:20px 16px 80px;width:100%}
 #app{flex:1;min-height:0;display:flex;flex-direction:column}
+
+.hero{text-align:center;margin-bottom:20px}.hero .logo{width:60px;height:60px;margin-bottom:6px}
+.hero h1{margin:0;font-size:28px;letter-spacing:-.6px}.hero h1 span{font-weight:400;color:var(--mut)}
+.tag{font-size:16px;color:var(--acc);font-weight:600;margin:4px 0 8px}.hero p{margin:0;color:var(--mut);font-size:14px}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-bottom:16px}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:0.5px;color:var(--mut);font-weight:600;margin-bottom:12px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.selector-box{background:var(--bg);padding:12px;border-radius:12px;cursor:pointer;border:1px solid transparent;transition:border 0.2s}
+.selector-box:hover{border-color:var(--acc)}
+.selector-box label{display:block;font-size:12px;color:var(--mut);margin-bottom:4px}
+.selector-box select{border:none;background:transparent;font-size:16px;font-weight:600;padding:0;outline:none;width:100%}
+.hint{font-size:13px;color:var(--acc);background:rgba(15,118,110,0.08);border-radius:8px;padding:10px 12px;margin:12px 0}
+label.opt{display:flex;gap:10px;align-items:center;margin:10px 0;font-size:15px;cursor:pointer}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--acc)}
+.fine{font-size:12px;color:var(--mut);margin:6px 0;text-align:center}
+
 #grid{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:8px;padding:8px;align-content:start}
 .tile{position:relative;background:#050b0a;border-radius:12px;overflow:hidden;aspect-ratio:16/9;cursor:pointer;min-height:0}
 .tile video{width:100%;height:100%;object-fit:contain;display:block}
@@ -52,14 +57,14 @@ summary{cursor:pointer;color:var(--mut)}
 #grid.focus .tile{height:80px;aspect-ratio:auto}
 #grid.focus .tile.pin{grid-column:1/-1;grid-row:1;height:auto}
 #grid.focus .tile:not(.pin) .fs{display:none}
-.empty{grid-column:1/-1;text-align:center;padding:26px 16px;background:var(--card);border:1px dashed var(--bd);border-radius:12px;color:var(--mut)}
-.empty b{display:block;color:var(--fg);font-size:17px;margin-bottom:4px}.empty .btn{margin-top:12px}
+.empty{grid-column:1/-1;text-align:center;padding:40px 20px;background:var(--card);border:1px dashed var(--bd);border-radius:16px;color:var(--mut);box-shadow:var(--shadow)}
+.empty b{display:block;color:var(--fg);font-size:18px;margin-bottom:6px}.empty .btn{margin-top:16px}
 #diag{padding:0 16px 4px;font-size:13px;color:var(--warn)}#diag:empty{display:none}
-#alert{margin:0 8px 8px;padding:10px 12px;border-radius:12px;font-size:14px;background:#fef3c7;color:#451a03;border:1px solid #f59e0b}
+#alert{margin:0 8px 8px;padding:12px 14px;border-radius:12px;font-size:14px;background:#fef3c7;color:#451a03;border:1px solid #f59e0b;box-shadow:var(--shadow)}
 #alert[data-lvl=red]{background:#fee2e2;color:#450a0a;border-color:#ef4444}
 #alert .btn{padding:6px 12px;color:#111;background:#fff;border-color:#0003}
 .rowb{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px}
-.dbar{position:relative;display:flex;justify-content:space-between;gap:10px;margin:0 8px 8px;padding:8px 12px 12px;width:calc(100% - 16px);border:1px solid var(--bd);border-radius:12px;background:var(--card);font-size:13px;cursor:pointer;text-align:left;overflow:hidden}
+.dbar{position:relative;display:flex;justify-content:space-between;gap:10px;margin:0 8px 8px;padding:10px 14px 14px;width:calc(100% - 16px);border:1px solid var(--bd);border-radius:12px;background:var(--card);font-size:13px;cursor:pointer;text-align:left;overflow:hidden;box-shadow:var(--shadow)}
 .dbar span:first-child{font-weight:600}.dbar span:last-child{color:var(--mut)}
 .dbar i,.bar i{position:absolute;left:0;bottom:0;height:5px;width:0;background:var(--acc);transition:width .6s}
 [data-lvl=amber] i,i[data-lvl=amber]{background:#f59e0b}[data-lvl=red] i,i[data-lvl=red]{background:#ef4444}
@@ -67,56 +72,91 @@ summary{cursor:pointer;color:var(--mut)}
 .ctl{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;border:1px solid var(--bd);border-radius:12px;background:var(--bg);cursor:pointer;font-size:11px;color:var(--fg)}
 .ctl.on{background:var(--acc);border-color:var(--acc);color:var(--onacc)}.ctl.off{color:var(--off);border-color:var(--off)}
 .ctl.danger{background:var(--off);border-color:var(--off);color:#fff}
-.sheet{position:fixed;inset:0;background:#0008;display:flex;align-items:flex-end;justify-content:center;z-index:20}
-.box{background:var(--card);width:100%;max-width:480px;border-radius:18px 18px 0 0;padding:18px;padding-bottom:max(18px,env(safe-area-inset-bottom));max-height:90dvh;overflow:auto}
-@media(min-width:700px){.sheet{align-items:center}.box{border-radius:18px}}
-.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:17px}
-.x{border:0;background:none;font-size:20px;cursor:pointer;padding:4px 8px}.rowb .btn{flex:1}
-#link{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg)}
-.big{font-size:22px;font-weight:700}
-.bar{position:relative;height:8px;background:var(--bg);border-radius:6px;overflow:hidden;margin:8px 0 12px}.bar i{height:8px}
-.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0 4px}
-.kv div{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}.kv b{display:block;font-size:15px;color:var(--fg);text-transform:none;letter-spacing:0}
-.savings{margin:10px 0;padding:12px;border-radius:12px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#065f46;border:1px solid #6ee7b7}
-@media(prefers-color-scheme:dark){.savings{background:linear-gradient(135deg,#04201c,#064e3b);color:#a7f3d0;border-color:#0f766e}}
-.savings b{font-size:22px;display:block}.savings small{opacity:.8}.savings .sub{font-size:13px;margin-top:4px}
 
-#usage{flex:1;overflow:auto;max-width:720px;margin:0 auto;width:100%;padding:14px 14px 30px}
-#usage h2{margin:6px 0 10px;font-size:20px}
-.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:14px}
-.summary .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 12px}
-.summary .card div{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
-.summary .card b{display:block;font-size:20px;margin-top:2px}
-.chart{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:14px}
-.chart .bars{display:flex;align-items:flex-end;gap:4px;height:120px;margin-top:8px}
+/* Sheets & Modals */
+.sheet{position:fixed;inset:0;background:#0008;display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.box{background:var(--card);width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:20px;padding-bottom:max(20px,env(safe-area-inset-bottom));max-height:90dvh;overflow:auto;box-shadow:0 -4px 20px rgba(0,0,0,0.1)}
+@media(min-width:700px){.sheet{align-items:center}.box{border-radius:20px}}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:18px;font-weight:600}
+.x{border:0;background:none;font-size:24px;cursor:pointer;padding:4px;color:var(--mut)}
+#link{width:100%;padding:12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);font-size:14px}
+.big{font-size:24px;font-weight:700}
+.bar{position:relative;height:8px;background:var(--bg);border-radius:6px;overflow:hidden;margin:8px 0 16px}.bar i{height:8px}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}
+.kv div{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}.kv b{display:block;font-size:16px;color:var(--fg);text-transform:none;letter-spacing:0;margin-top:2px}
+.savings{margin:12px 0;padding:16px;border-radius:12px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#065f46;border:1px solid #6ee7b7}
+@media(prefers-color-scheme:dark){.savings{background:linear-gradient(135deg,#04201c,#064e3b);color:#a7f3d0;border-color:#0f766e}}
+.savings b{font-size:26px;display:block;margin-bottom:2px}.savings small{opacity:.8;font-size:13px}.savings .sub{font-size:14px;margin-top:6px}
+
+/* Usage & Contacts */
+#usage-view h2, #contacts-view h2 {margin:8px 0 16px;font-size:22px}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px}
+.summary .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow)}
+.summary .card div{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+.summary .card b{display:block;font-size:22px;margin-top:4px}
+.chart{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:20px;box-shadow:var(--shadow)}
+.chart .bars{display:flex;align-items:flex-end;gap:6px;height:120px;margin-top:12px}
 .chart .bars .b{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
-.chart .bars .b i{display:block;width:100%;max-width:22px;background:var(--acc);border-radius:4px 4px 0 0;min-height:2px;transition:height .3s}
-.chart .bars .b span{font-size:9px;color:var(--mut);margin-top:4px}
-.chart .legend{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-top:6px}
-.filters{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-.filters .btn{padding:6px 12px;font-size:13px}
+.chart .bars .b i{display:block;width:100%;max-width:24px;background:var(--acc);border-radius:4px 4px 0 0;min-height:4px;transition:height .3s}
+.chart .bars .b span{font-size:10px;color:var(--mut);margin-top:6px;font-weight:500}
+.chart .legend{display:flex;justify-content:space-between;font-size:12px;color:var(--mut);margin-top:8px}
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filters .btn{padding:8px 16px;font-size:13px;border-radius:20px}
 .filters .btn.on{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
-.hist{display:flex;flex-direction:column;gap:8px}
-.hist .row{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;cursor:pointer}
+.hist{display:flex;flex-direction:column;gap:10px}
+.hist .row{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px 16px;cursor:pointer;box-shadow:var(--shadow);transition:background 0.2s}
+.hist .row:hover{background:var(--bg)}
 .hist .row .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-.hist .row .top b{font-size:14px}
+.hist .row .top b{font-size:15px}
 .hist .row .top span{font-size:12px;color:var(--mut);white-space:nowrap}
-.hist .row .meta{font-size:12px;color:var(--mut);margin-top:2px}
-.hist .row .detail{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--bd);font-size:12px;color:var(--mut)}
+.hist .row .meta{font-size:13px;color:var(--mut);margin-top:4px}
+.hist .row .detail{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--bd);font-size:13px;color:var(--mut);line-height:1.6}
 .hist .row.open .detail{display:block}
-.hist .empty{background:var(--card);border:1px dashed var(--bd);border-radius:12px;padding:26px 16px;text-align:center;color:var(--mut)}
-.hist .empty b{display:block;color:var(--fg);font-size:16px;margin-bottom:4px}
-.tabs{display:flex;gap:6px;padding:8px 10px;background:var(--card);border-top:1px solid var(--bd)}
-.tabs .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border:1px solid transparent;border-radius:10px;background:transparent;cursor:pointer;font-size:11px;color:var(--mut)}
-.tabs .tab.on{color:var(--acc);border-color:var(--bd);background:var(--bg)}
+.hist .empty{background:var(--card);border:1px dashed var(--bd);border-radius:12px;padding:32px 16px;text-align:center;color:var(--mut);box-shadow:var(--shadow)}
+.hist .empty b{display:block;color:var(--fg);font-size:17px;margin-bottom:6px}
+
+.my-id-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;margin-bottom:20px;box-shadow:var(--shadow)}
+.my-id-card div{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px}
+.my-id-card b{font-size:24px;letter-spacing:1px;color:var(--acc)}
+.add-friend{display:flex;gap:8px;margin-bottom:20px}
+.add-friend input{flex:1;padding:12px;border:1px solid var(--bd);border-radius:10px;background:var(--card);font-size:15px}
+.friend-list{display:flex;flex-direction:column;gap:10px}
+.friend{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow)}
+.friend .name{font-weight:600;font-size:16px}
+.friend .id{font-size:12px;color:var(--mut);margin-top:2px}
+
+/* Tabs */
+.tabs{display:flex;justify-content:space-around;padding:8px 10px;padding-bottom:max(8px,env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--bd);position:fixed;bottom:0;left:0;right:0;z-index:10}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 2px;border:none;background:transparent;cursor:pointer;font-size:11px;color:var(--mut);font-weight:500}
+.tab.on{color:var(--acc)}
+.tab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 [hidden]{display:none!important}
-@media(max-width:480px){#roominfo code{display:none}.hero h1{font-size:24px}.two{grid-template-columns:1fr}}
+
+/* Install Banner & Update Toast */
+.install-banner{position:fixed;bottom:60px;left:8px;right:8px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 16px;z-index:30;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:flex;align-items:center;gap:12px}
+.install-banner .txt{flex:1;font-size:13px}
+.install-banner .txt b{display:block;font-size:14px;margin-bottom:2px}
+.install-banner .actions{display:flex;gap:8px}
+.install-banner .actions .btn{padding:8px 12px;font-size:12px}
+.install-banner .close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--mut);padding:4px}
+#update-toast{position:fixed;top:16px;left:16px;right:16px;background:var(--acc);color:var(--onacc);padding:12px 16px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;z-index:40;box-shadow:0 4px 12px rgba(0,0,0,0.2);transform:translateY(-100px);transition:transform 0.3s ease}
+#update-toast.show{transform:translateY(0)}
+#update-toast span{font-size:14px;font-weight:500}
+#update-toast button{background:rgba(255,255,255,0.2);border:none;color:inherit;padding:6px 12px;border-radius:8px;font-weight:600;cursor:pointer}
+
+/* Incoming Call */
+#incoming-call{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;padding:20px;text-align:center}
+#incoming-call h2{font-size:28px;margin:10px 0}
+#incoming-call p{font-size:16px;opacity:0.8}
+.ring-anim{width:100px;height:100px;border-radius:50%;background:var(--acc);display:grid;place-items:center;margin-bottom:20px;animation:pulse 1.5s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(45,212,191,0.7)}70%{box-shadow:0 0 0 30px rgba(45,212,191,0)}100%{box-shadow:0 0 0 0 rgba(45,212,191,0)}}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0f766e"/><path d="M10 20l10 12-10 12M54 20L44 32l10 12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M26.5 24v16l11-8z" fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></symbol>
-<symbol id="ic-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+<symbol id="ic-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+<symbol id="ic-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
 <symbol id="ic-chart" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></symbol>
 <symbol id="ic-mic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></symbol>
 <symbol id="ic-cam" viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></symbol>
@@ -126,118 +166,92 @@ summary{cursor:pointer;color:var(--mut)}
 <symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></symbol>
 <symbol id="ic-exit" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
 <symbol id="ic-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+<symbol id="ic-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="ic-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
 </svg>
+
+<div id="update-toast">
+  <span>A new version is available</span>
+  <button id="btn-update-refresh">Refresh</button>
+</div>
 
 <header>
   <div class="brand"><svg class="logo"><use href="#logo"/></svg><span>LowData <em>Call</em></span></div>
   <div id="roominfo" hidden><code id="room"></code><button id="invite" class="btn primary"><svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Invite</button></div>
 </header>
 
-<main id="join">
+<!-- INCOMING CALL OVERLAY -->
+<div id="incoming-call" hidden>
+  <div class="ring-anim"><svg style="width:40px;height:40px;fill:none;stroke:#fff;stroke-width:2"><use href="#ic-phone"/></svg></div>
+  <h2 id="incoming-name">Incoming Call</h2>
+  <p>Wants to connect with you</p>
+  <div style="display:flex;gap:20px;margin-top:40px">
+    <button id="btn-decline" class="btn big" style="background:var(--off);color:#fff;border:none;width:auto;padding:14px 32px;border-radius:30px">Decline</button>
+    <button id="btn-accept" class="btn big primary" style="width:auto;padding:14px 32px;border-radius:30px">Accept</button>
+  </div>
+</div>
+
+<!-- HOME VIEW -->
+<main id="home-view">
   <div class="hero">
     <svg class="logo"><use href="#logo"/></svg>
     <h1>LowData <span>Call</span></h1>
     <div class="tag">Same call. Less data.</div>
-    <p>Video meetings built for mobile data. Works in your browser. Nothing to install.</p>
+    <p>Private, efficient video calls. Works in your browser. Install the app for quick access.</p>
   </div>
 
   <div class="panel">
-    <div class="meet">Meeting <code id="room2"></code> · <a href="#" id="newmeet">start a different meeting</a></div>
-
-    <div class="step">
-      <div class="num">1</div>
-      <div class="body">
-        <h3>Share the invite</h3>
-        <button id="create" class="btn primary big">Create a meeting & get invite link</button>
-        <div id="create-invite" hidden>
-          <input id="pre-link" readonly style="width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);margin-top:8px">
-          <div class="rowb">
-            <button class="btn primary" id="pre-cpy">Copy link</button>
-            <button class="btn" id="pre-wa">WhatsApp</button>
-            <button class="btn" id="pre-share" hidden>Share…</button>
-          </div>
-        </div>
+    <div class="section-title">Meeting Setup</div>
+    <div class="meet" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+      <span>Room: <code id="room2"></code></span>
+      <button id="newmeet" class="btn" style="padding:6px 12px; font-size:13px;">Start new</button>
+    </div>
+    <div class="grid-2">
+      <div class="selector-box">
+        <label>Data Budget</label>
+        <select id="budget">
+          <option value="0">No limit</option><option value="100">100 MB</option><option value="250" selected>250 MB</option><option value="500">500 MB</option><option value="1000">1 GB</option><option value="2000">2 GB</option>
+        </select>
+      </div>
+      <div class="selector-box">
+        <label>Duration</label>
+        <select id="mins">
+          <option value="15">15 min</option><option value="30">30 min</option><option value="60" selected>1 hour</option><option value="90">90 min</option><option value="120">2 hours</option>
+        </select>
       </div>
     </div>
-
-    <div class="step">
-      <div class="num">2</div>
-      <div class="body">
-        <h3>Set your data budget</h3>
-        <div class="two">
-          <label class="fld">Data budget
-            <select id="budget"><option value="0">No limit</option><option value="100">100 MB</option><option value="250" selected>250 MB</option><option value="500">500 MB</option><option value="1000">1 GB</option><option value="2000">2 GB</option></select></label>
-          <label class="fld">Meeting length
-            <select id="mins"><option value="15">15 min</option><option value="30">30 min</option><option value="60" selected>1 hour</option><option value="90">90 min</option><option value="120">2 hours</option></select></label>
-        </div>
-        <div class="hint" id="hint"></div>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="num">3</div>
-      <div class="body">
-        <h3>Join</h3>
-        <label class="opt"><input type="checkbox" id="mobile"> I am on mobile data</label>
-        <label class="opt"><input type="checkbox" id="camoff"> Join with camera off</label>
-        <button id="go" class="btn primary big" style="margin-top:8px">Join meeting</button>
-        <button id="test" class="btn big" style="margin-top:8px">Test my connection</button>
-        <div id="testout" class="fine" style="text-align:center"></div>
-      </div>
-    </div>
-
-    <p id="inapp" hidden style="color:var(--warn);font-size:13px">You seem to be in an in-app browser. If the camera does not work, open in Chrome or Safari.</p>
+    <div class="hint" id="hint"></div>
+    <label class="opt"><input type="checkbox" id="mobile"> I am on mobile data</label>
+    <label class="opt"><input type="checkbox" id="camoff"> Join with camera off</label>
+    <button id="go" class="btn primary big" style="margin-top:12px">Join meeting</button>
+    <button id="test" class="btn big outline" style="margin-top:10px">Test my connection</button>
+    <div id="testout" class="fine"></div>
+    <p id="inapp" hidden style="color:var(--warn);font-size:13px;text-align:center">You seem to be in an in-app browser. If the camera does not work, open in Chrome or Safari.</p>
   </div>
-
-  <!-- PWA Install Section -->
-  <div style="margin-top:14px; text-align:center;">
-    <button id="install-btn" class="btn big" style="display:none; background:var(--card); color:var(--acc); border-color:var(--acc);">
-      <svg class="ic"><use href="#ic-download"/></svg> Install App on this device
-    </button>
-    <div id="ios-install-hint" style="display:none; font-size:13px; color:var(--mut); margin-top:8px; padding:10px; background:var(--card); border-radius:12px; border:1px solid var(--bd);">
-      To install on iPhone/iPad: tap the <b>Share</b> icon at the bottom of Safari and choose <b>Add to Home Screen</b>.
-    </div>
-  </div>
-
-  <details>
-    <summary>How the data budget works</summary>
-    <ul style="padding-left:18px;margin:8px 0;font-size:13px;color:var(--mut)">
-      <li><b>You set a budget.</b> Auto quality picks the best video that lets it last your whole meeting.</li>
-      <li><b>You get a warning</b> about 10 minutes before the limit. You can extend or switch to audio only.</li>
-      <li><b>At the limit,</b> video pauses and audio continues until you extend.</li>
-      <li><b>Direct and encrypted.</b> Media goes straight between devices, or via an encrypted relay on strict networks.</li>
-    </ul>
-    <div class="fine">Upper limits for a 1-to-1 call (upload plus download). Real use varies. The live meter shows your measured usage.</div>
-  </details>
+  <div class="fine" style="margin-bottom:20px">Private and encrypted. No accounts required.</div>
 </main>
 
-<div id="app" hidden>
-  <div id="grid">
-    <div class="empty" id="empty"><b>You are the only one here</b>Invite people to start the call.<br><button class="btn primary" id="e-invite" style="margin-top:10px">Invite people</button></div>
+<!-- CONTACTS VIEW -->
+<div id="contacts-view" hidden>
+  <h2>Contacts</h2>
+  <div class="my-id-card">
+    <div>Your Personal ID</div>
+    <b id="my-id-display">----</b>
+    <div style="font-size:12px;color:var(--mut);margin-top:8px">Share this ID with friends so they can call you directly.</div>
   </div>
-  <div id="diag"></div>
-  <div id="alert" hidden></div>
-  
-  <div id="recovery-prompt" hidden style="margin:0 8px 8px;padding:12px;border-radius:12px;background:#ecfdf5;color:#065f46;border:1px solid #6ee7b7;font-size:14px">
-    <b>Connection interrupted?</b> Don't lose what you wanted to say.<br>
-    <button class="btn primary" id="rec-voice" style="margin-top:8px">Record voice message (up to 2 min)</button>
-    <button class="btn" id="rec-cancel" style="margin-top:8px">Dismiss</button>
+  <div class="section-title">Add a Friend</div>
+  <div class="add-friend">
+    <input id="friend-id-input" type="text" placeholder="Enter their 8-character ID" maxlength="8">
+    <button id="btn-add-friend" class="btn primary"><svg class="ic"><use href="#ic-plus"/></svg> Add</button>
   </div>
-
-  <button class="dbar" id="dbar" title="Open data usage"><span id="dq">–</span><span id="du">0 MB used</span><i id="dfill"></i></button>
-  <nav id="bar">
-    <button id="mic" class="ctl" title="Mute / unmute"><svg class="ic"><use href="#ic-mic"/></svg><span>Mic</span></button>
-    <button id="cam" class="ctl" title="Camera on / off"><svg class="ic"><use href="#ic-cam"/></svg><span>Camera</span></button>
-    <button id="share" class="ctl" title="Share your screen"><svg class="ic"><use href="#ic-screen"/></svg><span>Slides</span></button>
-    <button id="recv" class="ctl" title="Stop receiving others' video"><svg class="ic"><use href="#ic-eye"/></svg><span>Watch</span></button>
-    <button id="speaker" class="ctl" title="Switch to loudspeaker"><svg class="ic"><use href="#ic-speaker"/></svg><span>Speaker</span></button>
-    <button id="view" class="ctl" title="Switch view"><svg class="ic"><use href="#ic-grid"/></svg><span>View</span></button>
-    <button id="data" class="ctl" title="Data usage and quality"><svg class="ic"><use href="#ic-chart"/></svg><span>Data</span></button>
-    <button id="leave" class="ctl danger" title="Leave the call"><svg class="ic"><use href="#ic-exit"/></svg><span>Leave</span></button>
-  </nav>
+  <div class="section-title">My Friends</div>
+  <div class="friend-list" id="friend-list">
+    <!-- Populated by JS -->
+  </div>
 </div>
 
-<div id="usage" hidden>
+<!-- USAGE VIEW -->
+<div id="usage-view" hidden>
   <h2>Your data usage</h2>
   <div class="summary" id="sum-cards"></div>
   <div class="chart">
@@ -253,11 +267,44 @@ summary{cursor:pointer;color:var(--mut)}
   <div class="hist" id="hist"></div>
 </div>
 
-<nav class="tabs" id="tabs" hidden>
-  <button class="tab on" id="tab-call" data-tab="call"><svg class="ic" style="width:18px;height:18px"><use href="#ic-phone"/></svg><span>Call</span></button>
-  <button class="tab" id="tab-usage" data-tab="usage"><svg class="ic" style="width:18px;height:18px"><use href="#ic-chart"/></svg><span>Usage</span></button>
+<!-- CALL VIEW -->
+<div id="app" hidden>
+  <div id="grid">
+    <div class="empty" id="empty"><b>You are the only one here</b>Invite people to start the call.<br><button class="btn primary" id="e-invite" style="margin-top:12px">Invite people</button></div>
+  </div>
+  <div id="diag"></div>
+  <div id="alert" hidden></div>
+  
+  <div id="recovery-prompt" hidden style="margin:0 8px 8px;padding:12px;border-radius:12px;background:#ecfdf5;color:#065f46;border:1px solid #6ee7b7;font-size:14px">
+    <b>Connection interrupted?</b> Don't lose what you wanted to say.<br>
+    <div class="rowb">
+      <button class="btn primary" id="rec-voice" style="margin-top:8px">Record Voice</button>
+      <button class="btn" id="rec-video" style="margin-top:8px">Record Video</button>
+      <button class="btn" id="rec-cancel" style="margin-top:8px">Dismiss</button>
+    </div>
+  </div>
+
+  <button class="dbar" id="dbar" title="Open data usage"><span id="dq">–</span><span id="du">0 MB used</span><i id="dfill"></i></button>
+  <nav id="bar">
+    <button id="mic" class="ctl" title="Mute / unmute"><svg class="ic"><use href="#ic-mic"/></svg><span>Mic</span></button>
+    <button id="cam" class="ctl" title="Camera on / off"><svg class="ic"><use href="#ic-cam"/></svg><span>Camera</span></button>
+    <button id="share" class="ctl" title="Share your screen"><svg class="ic"><use href="#ic-screen"/></svg><span>Slides</span></button>
+    <button id="recv" class="ctl" title="Stop receiving others' video"><svg class="ic"><use href="#ic-eye"/></svg><span>Watch</span></button>
+    <button id="speaker" class="ctl" title="Switch to loudspeaker"><svg class="ic"><use href="#ic-speaker"/></svg><span>Speaker</span></button>
+    <button id="view" class="ctl" title="Switch view"><svg class="ic"><use href="#ic-grid"/></svg><span>View</span></button>
+    <button id="data" class="ctl" title="Data usage and quality"><svg class="ic"><use href="#ic-chart"/></svg><span>Data</span></button>
+    <button id="leave" class="ctl danger" title="Leave the call"><svg class="ic"><use href="#ic-exit"/></svg><span>Leave</span></button>
+  </nav>
+</div>
+
+<!-- TABS -->
+<nav class="tabs" id="tabs">
+  <button class="tab on" id="tab-home" data-tab="home"><svg><use href="#ic-home"/></svg>Home</button>
+  <button class="tab" id="tab-contacts" data-tab="contacts"><svg><use href="#ic-users"/></svg>Contacts</button>
+  <button class="tab" id="tab-usage" data-tab="usage"><svg><use href="#ic-chart"/></svg>Usage</button>
 </nav>
 
+<!-- SHEETS -->
 <div class="sheet" id="sheet-invite" hidden><div class="box">
   <div class="sh"><b>Invite people</b><button class="x" data-close aria-label="Close">✕</button></div>
   <input id="link" readonly>
@@ -282,15 +329,8 @@ summary{cursor:pointer;color:var(--mut)}
   <div class="fine">Voice only for lower data. Max 2 minutes. Messages expire after 24 hours.</div>
 </div></div>
 
-<div class="sheet" id="sheet-pending" hidden><div class="box">
-  <div class="sh"><b>Pending recovery messages</b><button class="x" data-close aria-label="Close">✕</button></div>
-  <div id="pending-list"></div>
-  <div class="fine">These were recorded while offline. Send them when connected.</div>
-</div></div>
-
 <div class="sheet" id="sheet-data" hidden><div class="box">
   <div class="sh"><b>Data usage</b><button class="x" data-close aria-label="Close">✕</button></div>
-
   <div class="fine"><b>My data efficiency (private to you)</b></div>
   <div class="big" id="stext">0 MB used</div>
   <div class="bar"><i id="sfill"></i></div>
@@ -305,22 +345,18 @@ summary{cursor:pointer;color:var(--mut)}
   <div class="rowb">
     <button class="btn" data-x="50">+50 MB</button><button class="btn" data-x="100">+100 MB</button><button class="btn" data-x="250">+250 MB</button><button class="btn" data-x="0">No limit</button>
   </div>
-
   <div class="fine" style="margin-top:14px"><b>This call, from this device</b></div>
   <div class="kv"><div>Upload<b id="up">–</b></div><div>Download<b id="dn">–</b></div><div>This call<b id="tot">0.0 MB</b></div><div>At this rate<b id="ph">–</b></div></div>
   <div class="fine" id="net">Waiting for others…</div>
   <div id="cats" class="fine" style="margin-top:8px"></div>
-
   <div class="savings" style="margin-top:12px">
     <b id="savedNum">–</b>
     <small>saved vs. a normal HD call of the same length</small>
     <div class="sub" id="savedSub"></div>
   </div>
-
   <label class="fld" style="margin-top:14px">Video quality
     <select id="mode"><option value="auto">Auto (recommended)</option><option value="hd">HD 720p</option><option value="balanced">Balanced 540p</option><option value="saver">Saver 360p</option><option value="audio">Audio only</option></select></label>
   <div class="fine" id="qlabel"></div>
-
   <div class="fine">Auto quality adjusts to make your budget last the planned meeting. At the limit video pauses and audio continues until you extend.</div>
 </div></div>
 
@@ -343,36 +379,172 @@ summary{cursor:pointer;color:var(--mut)}
   <div class="fine">Baseline assumes a normal HD video call of the same duration at ~1,400 MB/hour for 1-to-1. Your actual usage is measured from WebRTC stats. Carrier-billed usage may differ slightly.</div>
 </div></div>
 
+<!-- INSTALL BANNER -->
+<div id="install-banner" class="install-banner" hidden>
+  <div class="txt">
+    <b>Get the App</b>
+    <span>Install for quick access. Not required, but great for frequent calls.</span>
+  </div>
+  <div class="actions">
+    <button id="btn-install" class="btn primary">Install</button>
+    <button class="close" id="btn-install-close">✕</button>
+  </div>
+</div>
+
 <script>
 const $ = s => document.querySelector(s);
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(() => {});
 if (/FBAN|FBAV|Instagram|Line\/|MicroMessenger|Snapchat|TikTok/i.test(navigator.userAgent)) $('#inapp').hidden = false;
 
-// --- PWA Install Logic ---
-let deferredPrompt;
-const installBtn = $('#install-btn');
-const iosHint = $('#ios-install-hint');
+// --- PWA Update & Install Logic ---
+let newWorker;
+let refreshing = false;
 
+navigator.serviceWorker.addEventListener('controllerchange', () => {
+  if (refreshing) return;
+  refreshing = true;
+  window.location.reload();
+});
+
+$('#btn-update-refresh').addEventListener('click', () => {
+  if (newWorker) { newWorker.postMessage({ action: 'skipWaiting' }); } 
+  else { window.location.reload(); }
+});
+
+let deferredPrompt;
+const installBanner = $('#install-banner');
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  installBtn.style.display = 'inline-flex';
+  installBanner.hidden = false;
 });
-
-installBtn.addEventListener('click', async () => {
+$('#btn-install').addEventListener('click', async () => {
   if (!deferredPrompt) return;
   deferredPrompt.prompt();
   const { outcome } = await deferredPrompt.userChoice;
   if (outcome === 'accepted') { console.log('User installed the app'); }
   deferredPrompt = null;
-  installBtn.style.display = 'none';
+  installBanner.hidden = true;
 });
-
+$('#btn-install-close').addEventListener('click', () => { installBanner.hidden = true; });
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-if (isIOS && !isStandalone) { iosHint.style.display = 'block'; }
-// --------------------------
+if (isIOS && !isStandalone) {
+  installBanner.querySelector('.txt span').innerHTML = 'Tap <b>Share</b> and choose <b>Add to Home Screen</b>.';
+  installBanner.hidden = false;
+  $('#btn-install').hidden = true;
+}
 
+// --- UI Tabs ---
+function showTab(name) {
+  $('#home-view').hidden = name !== 'home';
+  $('#contacts-view').hidden = name !== 'contacts';
+  $('#usage-view').hidden = name !== 'usage';
+  $('#app').hidden = name !== 'call';
+  $('#tabs').hidden = name === 'call';
+  
+  if (name === 'usage') renderUsage();
+  if (name === 'contacts') renderContacts();
+  
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.tab === name));
+}
+$('#tab-home').onclick = () => showTab('home');
+$('#tab-contacts').onclick = () => showTab('contacts');
+$('#tab-usage').onclick = () => showTab('usage');
+
+// --- Contacts Logic ---
+const myId = localStorage.getItem('ld_myid') || (Array.from(crypto.getRandomValues(new Uint8Array(4)), b => b.toString(16).padStart(2, '0')).join(''));
+localStorage.setItem('ld_myid', myId);
+$('#my-id-display').textContent = myId;
+
+let friends = JSON.parse(localStorage.getItem('ld_friends') || '[]');
+function renderContacts() {
+  const list = $('#friend-list');
+  if (!friends.length) {
+    list.innerHTML = '<div class="hist empty"><b>No contacts yet</b>Add a friend by their ID to call them directly.</div>';
+    return;
+  }
+  list.innerHTML = friends.map(f => `
+    <div class="friend">
+      <div><div class="name">${f.name}</div><div class="id">ID: ${f.id}</div></div>
+      <button class="btn primary" onclick="callFriend('${f.id}')"><svg class="ic"><use href="#ic-phone"/></svg>Call</button>
+    </div>
+  `).join('');
+}
+$('#btn-add-friend').onclick = () => {
+  const id = $('#friend-id-input').value.trim().toLowerCase();
+  if (id.length !== 8) return alert('ID must be 8 characters');
+  if (id === myId) return alert('You cannot add yourself');
+  if (friends.find(f => f.id === id)) return alert('Already added');
+  friends.push({ id, name: 'Friend ' + id.slice(0,4) });
+  localStorage.setItem('ld_friends', JSON.stringify(friends));
+  $('#friend-id-input').value = '';
+  renderContacts();
+};
+
+// --- Ringing Logic ---
+let currentCallRoom = null;
+window.callFriend = (friendId) => {
+  const room = 'call-' + friendId; // Simple deterministic room for 1-to-1
+  currentCallRoom = room;
+  location.hash = room; // Update URL just in case
+  // Send ring signal via server
+  fetch('/ring', {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({ to: friendId, from: myId, room: room, name: 'Friend' })
+  }).then(r => {
+    if (r.ok) {
+      alert('Ringing... Waiting for them to accept.');
+      // Auto-join the room immediately
+      startCall(room);
+    } else {
+      alert('User is offline or unavailable.');
+    }
+  });
+};
+
+let ringAudio;
+function playRing() {
+  if (!ringAudio) {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sine'; osc.frequency.value = 440;
+    gain.gain.value = 0.1;
+    osc.start();
+    setTimeout(() => osc.stop(), 2000); // 2 seconds ring
+  }
+}
+
+// Global SSE listener for incoming calls
+const globalEs = new EventSource('/events?room=global&id=' + myId + '&token=' + token);
+globalEs.onmessage = e => {
+  const m = JSON.parse(e.data);
+  if (m.type === 'incoming-call') {
+    if (!$('#incoming-call').hidden) return; // Already ringing
+    $('#incoming-name').textContent = m.name || 'Someone';
+    $('#incoming-call').hidden = false;
+    playRing();
+    // Try notification
+    if (Notification.permission === 'granted') {
+      new Notification('Incoming Call', { body: m.name + ' wants to connect', icon: '/icon-192.png' });
+    }
+    
+    $('#btn-accept').onclick = () => {
+      $('#incoming-call').hidden = true;
+      currentCallRoom = m.room;
+      location.hash = m.room;
+      startCall(m.room);
+    };
+    $('#btn-decline').onclick = () => {
+      $('#incoming-call').hidden = true;
+    };
+  }
+};
+
+// --- Core App Logic ---
 const MODES = {
   hd:       {h: 720, fps: 30, kbps: 1500, n: 'HD 720p'},
   balanced: {h: 540, fps: 20, kbps: 400,  n: 'Balanced 540p'},
@@ -383,38 +555,28 @@ const SLIDES = {h: 1080, fps: 2, kbps: 250};
 const AUDIO_KBPS = 24;
 const BASELINE_KBPS = 1400;
 const HIST_KEY = 'ld_history_v1';
-const HIST_MAX = 200;
 
 function loadHistory() { try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch { return []; } }
-function saveHistory(list) { try { localStorage.setItem(HIST_KEY, JSON.stringify(list.slice(0, HIST_MAX))); } catch {} }
+function saveHistory(list) { try { localStorage.setItem(HIST_KEY, JSON.stringify(list.slice(0, 200))); } catch {} }
 function addHistory(rec) { const l = loadHistory(); l.unshift(rec); saveHistory(l); }
 
 const accountant = {
   peers: new Map(),
   session: {audioSent:0, videoSent:0, screenSent:0, audioRecv:0, videoRecv:0, screenRecv:0, transportSent:0, transportRecv:0},
   lastSample: performance.now(), lastTotals: {sent:0, recv:0}, lastRate: {sent:0, recv:0},
-  ensurePeer(id) {
-    if (!this.peers.has(id)) this.peers.set(id, {audioSent:0, videoSent:0, screenSent:0, audioRecv:0, videoRecv:0, screenRecv:0, transportSent:0, transportRecv:0, prev: {}});
-    return this.peers.get(id);
-  },
+  ensurePeer(id) { if (!this.peers.has(id)) this.peers.set(id, {audioSent:0, videoSent:0, screenSent:0, audioRecv:0, videoRecv:0, screenRecv:0, transportSent:0, transportRecv:0, prev: {}}); return this.peers.get(id); },
   ingest(peerId, report) {
     const p = this.ensurePeer(peerId);
     report.forEach(r => {
       if (r.type === 'outbound-rtp') {
         const b = (r.bytesSent || 0), prev = p.prev['out_' + r.id] || 0, delta = Math.max(0, b - prev); p.prev['out_' + r.id] = b;
         if (r.kind === 'audio') { p.audioSent += delta; this.session.audioSent += delta; }
-        else if (r.kind === 'video') {
-          if (r.contentType === 'screenshare') { p.screenSent += delta; this.session.screenSent += delta; }
-          else { p.videoSent += delta; this.session.videoSent += delta; }
-        }
+        else if (r.kind === 'video') { if (r.contentType === 'screenshare') { p.screenSent += delta; this.session.screenSent += delta; } else { p.videoSent += delta; this.session.videoSent += delta; } }
       }
       if (r.type === 'inbound-rtp') {
         const b = (r.bytesReceived || 0), prev = p.prev['in_' + r.id] || 0, delta = Math.max(0, b - prev); p.prev['in_' + r.id] = b;
         if (r.kind === 'audio') { p.audioRecv += delta; this.session.audioRecv += delta; }
-        else if (r.kind === 'video') {
-          if (r.contentType === 'screenshare') { p.screenRecv += delta; this.session.screenRecv += delta; }
-          else { p.videoRecv += delta; this.session.videoRecv += delta; }
-        }
+        else if (r.kind === 'video') { if (r.contentType === 'screenshare') { p.screenRecv += delta; this.session.screenRecv += delta; } else { p.videoRecv += delta; this.session.videoRecv += delta; } }
       }
       if (r.type === 'transport') {
         const bs = (r.bytesSent || 0), br = (r.bytesReceived || 0), prevS = p.prev['t_s'] || 0, prevR = p.prev['t_r'] || 0;
@@ -426,82 +588,36 @@ const accountant = {
     const now = performance.now(), dt = (now - this.lastSample) / 1000;
     if (dt > 0.5) {
       const sent = this.totalSent(), recv = this.totalRecv();
-      this.lastRate.sent = Math.max(0, sent - this.lastTotals.sent) / dt;
-      this.lastRate.recv = Math.max(0, recv - this.lastTotals.recv) / dt;
+      this.lastRate.sent = Math.max(0, sent - this.lastTotals.sent) / dt; this.lastRate.recv = Math.max(0, recv - this.lastTotals.recv) / dt;
       this.lastTotals = {sent, recv}; this.lastSample = now;
     }
   },
   totalSent() { return this.session.audioSent + this.session.videoSent + this.session.screenSent + this.session.transportSent; },
   totalRecv() { return this.session.audioRecv + this.session.videoRecv + this.session.screenRecv + this.session.transportRecv; },
-  total() { return this.totalSent() + this.totalRecv(); },
-  snapshot() { return {ts: new Date().toISOString(), session: {...this.session}, total: this.total(), rate: {...this.lastRate}}; }
-};
-
-const recovery = {
-  recordings: [], mediaRecorder: null, chunks: [], stream: null, lastBlob: null,
-  async start() {
-    try {
-      this.stream = await navigator.mediaDevices.getUserMedia({audio: true, video: false});
-      this.chunks = [];
-      this.mediaRecorder = new MediaRecorder(this.stream, {mimeType: 'audio/webm;codecs=opus'});
-      this.mediaRecorder.ondataavailable = e => { if (e.data.size) this.chunks.push(e.data); };
-      this.mediaRecorder.start();
-      $('#rec-status').textContent = 'Recording…';
-      $('#rec-start').disabled = true;
-      $('#rec-stop').disabled = false;
-    } catch (e) { $('#rec-status').textContent = 'Microphone error: ' + e.message; }
-  },
-  stop() {
-    if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
-      this.mediaRecorder.stop();
-      this.mediaRecorder.onstop = () => {
-        const blob = new Blob(this.chunks, {type: 'audio/webm'});
-        const url = URL.createObjectURL(blob);
-        $('#rec-preview').innerHTML = '<audio controls src="' + url + '"></audio>';
-        this.lastBlob = blob;
-        $('#rec-save').disabled = false;
-        $('#rec-status').textContent = 'Recording ready (' + Math.round(blob.size / 1024) + ' KB)';
-        this.stream.getTracks().forEach(t => t.stop());
-      };
-    }
-  },
-  save() {
-    if (!this.lastBlob) return;
-    const rec = {id: Date.now(), blob: this.lastBlob, ts: Date.now(), type: 'voice'};
-    this.recordings.push(rec);
-    $('#sheet-recovery').hidden = true;
-    $('#recovery-prompt').hidden = true;
-    alert('Message saved locally. It will be available to send when connection returns.');
-  }
+  total() { return this.totalSent() + this.totalRecv(); }
 };
 
 const peers = new Map();
 const S = {mode: 'auto', cap: 0, budget: 0, mins: 60, share: false, recv: true, view: 'focus', pin: null, k: null, kt: 0, exhausted: false, warned: false, t0: 0, mobile: false, forceRelay: false, ended: false};
 
 let room = location.hash.slice(1).replace(/[^\w-]/g, '').slice(0, 40);
-if (!room) { room = Math.random().toString(36).slice(2, 8); location.hash = room; }
+if (!room || room === 'global') { room = Math.random().toString(36).slice(2, 8); location.hash = room; }
 $('#room').textContent = $('#room2').textContent = room;
-$('#newmeet').onclick = e => { e.preventDefault(); location.hash = Math.random().toString(36).slice(2, 8); location.reload(); };
+$('#newmeet').onclick = () => { location.hash = Math.random().toString(36).slice(2, 8); location.reload(); };
 
 const rid = n => Array.from(crypto.getRandomValues(new Uint8Array(n)), b => b.toString(16).padStart(2, '0')).join('');
-let me = rid(4), token = rid(16), ice = [], hasRelay = false, wake, mic, cam, scr, local, es, sendQ = Promise.resolve(), TU = 0, TD = 0;
-const FORCE_RELAY = /[?&]relay=1/.test(location.search);
+let me = myId, token = rid(16), ice = [], hasRelay = false, wake, mic, cam, scr, local, es, sendQ = Promise.resolve(), TU = 0, TD = 0;
 const diag = t => $('#diag').textContent = t || '';
 
 function sig(to, data) { sendQ = sendQ.then(() => fetch('/signal', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({room, from: me, token, to, data})}).catch(() => {})); }
 
-const ICON = {max: '<svg class="ic" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>'};
 function addTile(label, mirror, key) {
   const el = document.createElement('div'); el.className = 'tile' + (mirror ? ' mirror' : ''); el.dataset.k = key;
-  el.innerHTML = '<video autoplay playsinline></video><span class="lbl"></span><button class="fs" title="Full screen">' + ICON.max + '</button>';
+  el.innerHTML = '<video autoplay playsinline></video><span class="lbl"></span>';
   const v = el.querySelector('video'), s = el.querySelector('.lbl'), t = {el, v, s}; s.textContent = label;
   if (mirror) v.muted = true;
-  el.querySelector('.fs').onclick = e => { e.stopPropagation(); goFull(t); };
-  el.onclick = () => { S.pin = key; S.view = 'focus'; layout(); };
-  el.ondblclick = () => goFull(t);
   $('#grid').appendChild(el); return t;
 }
-function goFull(t) { if (document.fullscreenElement) return document.exitFullscreen(); if (t.el.requestFullscreen) t.el.requestFullscreen().catch(() => {}); else if (t.el.webkitRequestFullscreen) t.el.webkitRequestFullscreen(); else if (t.v.webkitEnterFullscreen) t.v.webkitEnterFullscreen(); }
 function layout() {
   const rem = [...peers.values()]; let pin = null;
   if (S.view === 'focus' && rem.length) pin = (S.pin === 'me' || peers.has(S.pin)) ? S.pin : (rem.find(p => p.sharing) || rem[0]).id;
@@ -548,7 +664,7 @@ const VID = {width: {ideal: 1280}, height: {ideal: 720}, frameRate: {ideal: 30}}
 async function setCam(on) { if (on) { try { cam = (await navigator.mediaDevices.getUserMedia({video: VID})).getVideoTracks()[0]; } catch (e) { diag('Camera: ' + e.name + ' – ' + e.message); cam = null; } } else if (cam) { cam.stop(); cam = null; } refresh(); }
 
 function mkPeer(id) {
-  const force = S.forceRelay || FORCE_RELAY;
+  const force = S.forceRelay;
   const pc = new RTCPeerConnection({iceServers: ice, bundlePolicy: 'max-bundle', iceCandidatePoolSize: 2, iceTransportPolicy: force ? 'relay' : 'all'});
   const p = {id, pc, wantVideo: true, ms: new MediaStream(), tile: addTile('Guest ' + id.slice(0, 3), false, id)};
   p.tile.v.srcObject = p.ms; peers.set(id, p); accountant.ensurePeer(id);
@@ -558,11 +674,7 @@ function mkPeer(id) {
     const st = pc.connectionState, name = 'Guest ' + id.slice(0, 3); clearTimeout(p.rt);
     if (st === 'connected') { applyPeer(p); p.tile.s.textContent = name; } else p.tile.s.textContent = name + ' (' + st + ')';
     if (st === 'disconnected' || st === 'failed') p.rt = setTimeout(() => restartIce(p), st === 'failed' ? 500 : 4000);
-    if (st === 'failed') {
-      diag('Connection failed. Retrying with compatibility mode...');
-      S.forceRelay = true; // Automatically retry with relay
-      restartIce(p, true);
-    }
+    if (st === 'failed') { diag('Connection failed. Retrying with compatibility mode...'); S.forceRelay = true; restartIce(p, true); }
   };
   reK(); refresh(); return p;
 }
@@ -593,37 +705,10 @@ async function onSignal(from, d) {
 }
 function drop(id) { const p = peers.get(id); if (!p) return; p.pc.close(); p.tile.el.remove(); peers.delete(id); accountant.peers.delete(id); reK(); refresh(); }
 
-function showTab(name) {
-  if (name === 'usage') {
-    $('#app').hidden = true; $('#usage').hidden = false; $('#tabs').hidden = false;
-    renderUsage();
-  } else {
-    $('#usage').hidden = true;
-    if (S.ended || !peers.size && $('#app').hidden && !$('#join').hidden) { $('#app').hidden = true; }
-    $('#app').hidden = false; $('#tabs').hidden = false;
-  }
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.tab === name));
-}
-$('#tab-call').onclick = () => showTab('call');
-$('#tab-usage').onclick = () => showTab('usage');
-$('#sumUsage').onclick = () => { $('#sheet-summary').hidden = true; showTab('usage'); };
-
-let usageFilter = 7;
-document.querySelectorAll('#filters .btn').forEach(b => b.onclick = () => {
-  usageFilter = +b.dataset.f;
-  document.querySelectorAll('#filters .btn').forEach(x => x.classList.toggle('on', x === b));
-  renderUsage();
-});
-
-function fmtMB(mb) { return mb >= 1000 ? (mb / 1000).toFixed(1) + ' GB' : mb.toFixed(1) + ' MB'; }
-function fmtDur(sec) { if (sec < 60) return Math.round(sec) + ' s'; const m = sec / 60; return m < 60 ? Math.round(m) + ' min' : (m / 60).toFixed(1) + ' h'; }
-
 function renderUsage() {
-  const all = loadHistory();
-  const now = Date.now();
+  const all = loadHistory(); const now = Date.now();
   const cutoff = usageFilter ? now - usageFilter * 86400000 : 0;
   const list = all.filter(r => new Date(r.endedAt).getTime() >= cutoff);
-
   const totalMB = list.reduce((s, r) => s + (r.usedMB || 0), 0);
   const totalSaved = list.reduce((s, r) => s + (r.savedMB || 0), 0);
   const totalSeconds = list.reduce((s, r) => s + (r.seconds || 0), 0);
@@ -632,12 +717,8 @@ function renderUsage() {
   const avgPct = n ? Math.round(list.reduce((s, r) => s + (r.savedPct || 0), 0) / n) : 0;
 
   $('#sum-cards').innerHTML = [
-    ['Calls', String(n)],
-    ['Data used', fmtMB(totalMB)],
-    ['Average per call', fmtMB(avgMB)],
-    ['Data saved', fmtMB(totalSaved)],
-    ['Avg. saving', avgPct + '%'],
-    ['Time in calls', fmtDur(totalSeconds)]
+    ['Calls', String(n)], ['Data used', fmtMB(totalMB)], ['Average per call', fmtMB(avgMB)],
+    ['Data saved', fmtMB(totalSaved)], ['Avg. saving', avgPct + '%'], ['Time in calls', fmtDur(totalSeconds)]
   ].map(([k, v]) => '<div class="card"><div>' + k + '</div><b>' + v + '</b></div>').join('');
 
   const days = 14, buckets = new Array(days).fill(0);
@@ -676,228 +757,107 @@ function renderUsage() {
   }).join('');
   document.querySelectorAll('#hist .row').forEach(row => row.onclick = () => row.classList.toggle('open'));
 }
+let usageFilter = 7;
+document.querySelectorAll('#filters .btn').forEach(b => b.onclick = () => {
+  usageFilter = +b.dataset.f;
+  document.querySelectorAll('#filters .btn').forEach(x => x.classList.toggle('on', x === b));
+  renderUsage();
+});
+
+function fmtMB(mb) { return mb >= 1000 ? (mb / 1000).toFixed(1) + ' GB' : mb.toFixed(1) + ' MB'; }
+function fmtDur(sec) { if (sec < 60) return Math.round(sec) + ' s'; const m = sec / 60; return m < 60 ? Math.round(m) + ' min' : (m / 60).toFixed(1) + ' h'; }
 
 function renderBudget() {
-  const used = (TU + TD);
-  const usedMB = used / 1e6;
+  const used = (TU + TD), usedMB = used / 1e6;
   const pct = S.budget ? Math.min(100, usedMB / S.budget * 100) : 0;
   const lvl = pct >= 100 ? 'red' : pct >= 80 ? 'amber' : '';
-  const eta = S.budget && accountant.lastRate && (accountant.lastRate.sent + accountant.lastRate.recv) > 0
-    ? Math.max(0, (S.budget - usedMB) * 1e6 / (accountant.lastRate.sent + accountant.lastRate.recv) / 60) : null;
+  const eta = S.budget && (accountant.lastRate.sent + accountant.lastRate.recv) > 0 ? Math.max(0, (S.budget - usedMB) * 1e6 / (accountant.lastRate.sent + accountant.lastRate.recv) / 60) : null;
   const txt = usedMB.toFixed(1) + ' MB' + (S.budget ? ' of ' + S.budget + ' MB' : ' used') + (eta !== null ? ' · ~' + Math.max(1, Math.round(eta)) + ' min left' : '');
-  const sfill = $('#sfill'), dfill = $('#dfill'), stext = $('#stext'), du = $('#du'), dbar = $('#dbar');
-  if (stext) stext.textContent = txt;
-  if (du) du.textContent = txt;
-  if (sfill) { sfill.style.width = pct + '%'; sfill.dataset.lvl = lvl; }
-  if (dfill) { dfill.style.width = pct + '%'; }
-  if (dbar) dbar.dataset.lvl = lvl;
-
-  const rate = (accountant.lastRate.sent + accountant.lastRate.recv) / 1e6;
+  $('#stext').textContent = txt; $('#du').textContent = txt;
+  $('#sfill').style.width = $('#dfill').style.width = pct + '%'; $('#sfill').dataset.lvl = $('#dbar').dataset.lvl = lvl;
   $('#measured').textContent = usedMB.toFixed(1) + ' MB';
   $('#remaining').textContent = S.budget ? Math.max(0, S.budget - usedMB).toFixed(1) + ' MB' : 'No limit';
-  $('#avgrate').textContent = rate > 0 ? (rate * 60).toFixed(2) + ' MB/min' : '–';
+  $('#avgrate').textContent = ((accountant.lastRate.sent + accountant.lastRate.recv) / 1e6 * 60).toFixed(2) + ' MB/min';
   $('#timeleft').textContent = eta !== null ? Math.round(eta) + ' min' : '–';
 }
 
-let ema = 0;
-function budgetTick(bytes, dt) {
-  const used = (TU + TD) / 1e6; ema = ema ? ema * 0.7 + (bytes / dt) * 0.3 : bytes / dt;
-  let eta = null;
-  if (S.budget) { const left = Math.max(0, S.budget - used); eta = ema > 1000 ? left * 1e6 / ema / 60 : null; if (used >= S.budget && !S.exhausted) { S.exhausted = true; refresh(); alertLimit(); } else if (!S.exhausted && !S.warned && used > 1 && eta !== null && eta <= 10) { S.warned = true; alertSoon(Math.ceil(eta), left); } }
-  renderBudget();
-}
-function extend(mb) { const used = (TU + TD) / 1e6; S.budget = mb === 0 ? 0 : (S.budget > used ? S.budget : Math.ceil(used)) + mb; S.exhausted = false; S.warned = false; reK(); renderBudget(); refresh(); }
-function noLimit() { S.budget = 0; S.cap = 0; S.exhausted = false; S.warned = false; reK(); renderBudget(); refresh(); }
-function showAlert(msg, btns, lvl) {
-  const a = $('#alert'); a.dataset.lvl = lvl; a.innerHTML = '';
-  const t = document.createElement('div'); t.textContent = msg; a.appendChild(t);
-  const row = document.createElement('div'); row.className = 'rowb';
-  btns.concat([{t: 'Dismiss'}]).forEach(b => { const x = document.createElement('button'); x.className = 'btn'; x.textContent = b.t; x.onclick = () => { if (b.f) b.f(); a.hidden = true; }; row.appendChild(x); });
-  a.appendChild(row); a.hidden = false; if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-}
-const toAudio = () => { S.mode = 'audio'; $('#mode').value = 'audio'; reK(); refresh(); };
-const alertSoon = (min, left) => showAlert('Heads up: about ' + min + ' min of data left (' + Math.round(left) + ' MB).', [{t: 'Extend +100 MB', f: () => extend(100)}, {t: 'Audio only', f: toAudio}], 'amber');
-const alertLimit = () => showAlert('Data limit reached. Video is paused to protect your data; audio continues.', [{t: 'Extend +100 MB', f: () => extend(100)}, {t: '+250 MB', f: () => extend(250)}], 'red');
-function announce() { peers.forEach(p => sig(p.id, {ctl: {sharing: !!(S.share && scr)}})); }
-
-function showSummary() {
-  S.ended = true;
-  const seconds = Math.max(1, (performance.now() - S.t0) / 1000);
-  const minutes = seconds / 60, people = Math.max(1, peers.size);
-  const usedMB = accountant.total() / 1e6;
-  const baselineMB = (BASELINE_KBPS * 1000 / 8) * seconds * people / 1e6;
-  const savedMB = Math.max(0, baselineMB - usedMB);
-  const savedPct = baselineMB > 0 ? Math.round(savedMB / baselineMB * 100) : 0;
-
-  addHistory({
-    id: rid(6), endedAt: new Date().toISOString(), seconds: Math.round(seconds), people,
-    usedMB: +usedMB.toFixed(2), baselineMB: +baselineMB.toFixed(2), savedMB: +savedMB.toFixed(2), savedPct,
-    categories: {
-      audio: +((accountant.session.audioSent + accountant.session.audioRecv) / 1e6).toFixed(2),
-      video: +((accountant.session.videoSent + accountant.session.videoRecv) / 1e6).toFixed(2),
-      slides: +((accountant.session.screenSent + accountant.session.screenRecv) / 1e6).toFixed(2),
-      transport: +((accountant.session.transportSent + accountant.session.transportRecv) / 1e6).toFixed(2)
-    }
-  });
-
-  $('#sumSaved').textContent = savedMB.toFixed(1) + ' MB';
-  $('#sumSub').textContent = savedPct + '% less than a normal HD call';
-  $('#sumDur').textContent = fmtDur(seconds);
-  $('#sumUsed').textContent = usedMB.toFixed(1) + ' MB';
-  $('#sumBase').textContent = baselineMB.toFixed(1) + ' MB';
-  $('#sumPeople').textContent = String(people);
-  const s = accountant.session, fmt = b => (b / 1e6).toFixed(1) + ' MB';
-  $('#sumCats').innerHTML = 'Audio ' + fmt(s.audioSent + s.audioRecv) + ' · Video ' + fmt(s.videoSent + s.videoRecv) + ' · Slides ' + fmt(s.screenSent + s.screenRecv) + '<br>Transport overhead: ' + fmt(s.transportSent + s.transportRecv);
-  $('#sheet-summary').hidden = false;
-
-  navigator.sendBeacon('/leave', JSON.stringify({room, id: me, token}));
-  if (es) es.close(); peers.forEach(p => p.pc.close());
-  [mic, cam, scr].forEach(t => t && t.stop());
-}
-
-$('#go').onclick = async () => {
-  $('#join').hidden = true; $('#app').hidden = false; $('#roominfo').hidden = false; plan(); S.t0 = performance.now(); keepAwake();
-  S.forceRelay = false; // Reset relay flag on fresh join
+async function startCall(targetRoom) {
+  showTab('call');
+  $('#join').hidden = true; $('#home-view').hidden = true;
+  $('#roominfo').hidden = false;
+  plan(); S.t0 = performance.now();
+  
+  try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch {}
   try { const cfg = await (await fetch('/config')).json(); ice = cfg.iceServers; hasRelay = cfg.relay; } catch { ice = [{urls: 'stun:stun.l.google.com:19302'}]; }
   local = addTile('You', true, 'me');
-  if (!navigator.mediaDevices) { diag('Camera and mic need https:// or localhost. Joined as viewer only.'); }
-  else { try { mic = (await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: true, noiseSuppression: true, autoGainControl: true}})).getAudioTracks()[0]; } catch (e) { diag('Mic: ' + e.name + ' – ' + e.message); } if (!$('#camoff').checked) await setCam(true); }
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) $('#share').hidden = true;
+  if (!navigator.mediaDevices) { diag('Camera and mic need https:// or localhost.'); }
+  else { 
+    try { mic = (await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: true, noiseSuppression: true, autoGainControl: true}})).getAudioTracks()[0]; } catch (e) { diag('Mic: ' + e.name); } 
+    if (!$('#camoff').checked) await setCam(true); 
+  }
   refresh();
-  es = new EventSource('/events?room=' + encodeURIComponent(room) + '&id=' + me + '&token=' + token);
+  es = new EventSource('/events?room=' + encodeURIComponent(targetRoom) + '&id=' + me + '&token=' + token);
   es.onmessage = e => {
     const m = JSON.parse(e.data);
-    if (m.type === 'welcome') { [...peers.keys()].filter(id => !m.peers.includes(id)).forEach(drop); m.peers.forEach(id => { const p = peers.get(id); if (p && ['failed', 'closed'].includes(p.pc.connectionState)) drop(id); }); m.peers.filter(id => !peers.has(id)).forEach(call); }
+    if (m.type === 'welcome') { [...peers.keys()].filter(id => !m.peers.includes(id)).forEach(drop); m.peers.filter(id => !peers.has(id)).forEach(call); }
     else if (m.type === 'signal') onSignal(m.from, m.data);
     else if (m.type === 'leave') drop(m.id);
-    else if (m.type === 'full') { diag('This room is full (max 6 people).'); es.close(); }
   };
-  es.onerror = () => diag('Reconnecting to server…'); es.onopen = () => diag('');
-};
+}
+
+// Join button
+$('#go').onclick = () => { startCall(room); };
 
 $('#mic').onclick = () => { if (mic) { mic.enabled = !mic.enabled; refresh(); } };
 $('#cam').onclick = () => setCam(!cam);
 $('#share').onclick = async () => {
-  if (S.share && scr) { const old = scr; scr = null; S.share = false; announce(); refresh(); try { old.getTracks().forEach(t => t.stop()); } catch {} return; }
-  try { const stream = await navigator.mediaDevices.getDisplayMedia({video: {frameRate: 5}}); const track = stream.getVideoTracks()[0]; if (!track) return; track.onended = () => { if (scr !== track) return; scr = null; S.share = false; announce(); refresh(); }; scr = track; S.share = true; announce(); refresh(); }
+  if (S.share && scr) { const old = scr; scr = null; S.share = false; refresh(); try { old.getTracks().forEach(t => t.stop()); } catch {} return; }
+  try { const stream = await navigator.mediaDevices.getDisplayMedia({video: {frameRate: 5}}); const track = stream.getVideoTracks()[0]; if (!track) return; track.onended = () => { if (scr !== track) return; scr = null; S.share = false; refresh(); }; scr = track; S.share = true; refresh(); }
   catch (e) { diag('Screen share: ' + e.message); }
 };
 $('#recv').onclick = () => { S.recv = !S.recv; refresh(); peers.forEach(p => sig(p.id, {ctl: {video: S.recv}})); };
 $('#mode').onchange = e => { S.mode = e.target.value; reK(); refresh(); };
-$('#leave').onclick = () => { showSummary(); };
-
-let speakerOn = false;
-const speakerBtn = $('#speaker');
-if (!('setSinkId' in HTMLMediaElement.prototype) || /iPhone|iPad/.test(navigator.userAgent)) speakerBtn.hidden = true;
-else speakerBtn.onclick = async () => {
-  try {
-    if (!speakerOn) {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const outputs = devices.filter(d => d.kind === 'audiooutput');
-      const speaker = outputs.find(d => /speaker|default/i.test(d.label)) || outputs[0];
-      if (!speaker) return;
-      const audioEl = document.querySelector('#grid video:not(.mirror)');
-      if (audioEl) { await audioEl.setSinkId(speaker.deviceId); speakerOn = true; speakerBtn.classList.add('on'); }
-    } else {
-      const audioEl = document.querySelector('#grid video:not(.mirror)');
-      if (audioEl) { await audioEl.setSinkId(''); speakerOn = false; speakerBtn.classList.remove('on'); }
-    }
-  } catch (e) { diag('Speaker switch: ' + e.message); }
+$('#leave').onclick = () => { 
+  navigator.sendBeacon('/leave', JSON.stringify({room, id: me, token})); 
+  if (es) es.close(); peers.forEach(p => p.pc.close()); 
+  [mic, cam, scr].forEach(t => t && t.stop()); 
+  location.reload(); 
 };
+$('#view').onclick = () => { S.view = S.view === 'focus' ? 'grid' : 'focus'; if (S.view === 'focus') S.pin = null; layout(); };
+$('#data').onclick = $('#dbar').onclick = () => { $('#sheet-data').hidden = false; renderBudget(); };
+document.querySelectorAll('[data-x]').forEach(b => b.onclick = () => { 
+  const mb = +b.dataset.x; const used = (TU + TD) / 1e6; 
+  S.budget = mb === 0 ? 0 : (S.budget > used ? S.budget : Math.ceil(used)) + mb; 
+  S.exhausted = false; S.warned = false; reK(); renderBudget(); refresh(); 
+});
+document.querySelectorAll('.sheet').forEach(s => s.addEventListener('click', e => { if (e.target === s || e.target.closest('[data-close]')) s.hidden = true; }));
 
 function plan() {
   S.mobile = $('#mobile').checked; S.budget = +$('#budget').value; S.mins = +$('#mins').value;
   S.cap = S.budget ? S.budget / (S.mins / 60) : 0; S.exhausted = false; S.warned = false; S.k = null;
   const m = MODES[qKey()];
-  $('#hint').textContent = (S.budget ? S.budget + ' MB over ' + S.mins + ' min' : 'No data limit') + ' → Auto will use ' + (m ? m.n : 'Audio only') + '.' + (m ? '' : ' Try a bigger budget or a shorter meeting for video.');
+  $('#hint').textContent = (S.budget ? S.budget + ' MB over ' + S.mins + ' min' : 'No data limit') + ' → Auto will use ' + (m ? m.n : 'Audio only') + '.';
 }
-
-$('#rec-voice').onclick = () => { $('#sheet-recovery').hidden = false; };
-$('#rec-cancel').onclick = () => { $('#recovery-prompt').hidden = true; };
-$('#rec-start').onclick = () => recovery.start();
-$('#rec-stop').onclick = () => recovery.stop();
-$('#rec-save').onclick = () => recovery.save();
-$('#rec-discard').onclick = () => { $('#sheet-recovery').hidden = true; recovery.lastBlob = null; };
-$('#sheet-recovery .x').onclick = () => { $('#sheet-recovery').hidden = true; recovery.lastBlob = null; };
-
-function checkRecovery() {
-  const anyDisconnected = [...peers.values()].some(p => p.pc.connectionState === 'disconnected' || p.pc.connectionState === 'failed');
-  if (anyDisconnected && peers.size && !$('#app').hidden) {
-    $('#recovery-prompt').hidden = false;
-  } else {
-    $('#recovery-prompt').hidden = true;
-  }
-}
-setInterval(checkRecovery, 3000);
-
-const inviteURL = () => location.origin + location.pathname + '#' + room;
-const inviteText = () => 'Join my video call (it uses very little data): ' + inviteURL();
-$('#create').onclick = () => { $('#pre-link').value = inviteURL(); $('#create-invite').hidden = false; $('#create').hidden = true; if (navigator.share) $('#pre-share').hidden = false; };
-$('#pre-cpy').onclick = async () => { try { await navigator.clipboard.writeText(inviteURL()); } catch { $('#pre-link').select(); document.execCommand('copy'); } $('#pre-cpy').textContent = 'Copied ✓'; setTimeout(() => $('#pre-cpy').textContent = 'Copy link', 1600); };
-$('#pre-wa').onclick = () => window.open('https://wa.me/?text=' + encodeURIComponent(inviteText()), '_blank');
-$('#pre-share').onclick = () => navigator.share({title: 'LowData Call', text: 'Join my video call', url: inviteURL()}).catch(() => {});
-$('#invite').onclick = $('#e-invite').onclick = () => { $('#link').value = inviteURL(); $('#sheet-invite').hidden = false; };
-$('#cpy').onclick = async () => { try { await navigator.clipboard.writeText(inviteURL()); } catch { $('#link').select(); document.execCommand('copy'); } $('#cpy').textContent = 'Copied ✓'; setTimeout(() => $('#cpy').textContent = 'Copy link', 1600); };
-$('#wa').onclick = () => window.open('https://wa.me/?text=' + encodeURIComponent(inviteText()), '_blank');
-$('#em').onclick = () => { location.href = 'mailto:?subject=' + encodeURIComponent('Join my video call') + '&body=' + encodeURIComponent(inviteText() + '\n\nOpen the link in Chrome or Safari and allow camera and microphone.'); };
-if (navigator.share) $('#nat').hidden = false;
-$('#nat').onclick = () => navigator.share({title: 'LowData Call', text: 'Join my video call', url: inviteURL()}).catch(() => {});
-$('#data').onclick = $('#dbar').onclick = () => { $('#sheet-data').hidden = false; renderBudget(); };
-document.querySelectorAll('[data-x]').forEach(b => b.onclick = () => extend(+b.dataset.x));
-document.querySelectorAll('.sheet').forEach(s => s.addEventListener('click', e => { if (e.target === s || e.target.closest('[data-close]')) s.hidden = true; }));
-$('#view').onclick = () => { S.view = S.view === 'focus' ? 'grid' : 'focus'; if (S.view === 'focus') S.pin = null; layout(); };
-$('#sumNew').onclick = () => { location.reload(); }; // Hard refresh back to the join screen
-
-async function keepAwake() { try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch {} }
-const nudge = () => setTimeout(() => peers.forEach(p => p.pc.connectionState !== 'connected' && restartIce(p, true)), 3000);
-addEventListener('online', nudge); if (navigator.connection) navigator.connection.addEventListener('change', nudge);
-document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('#app').hidden) { keepAwake(); nudge(); } });
-
-$('#mobile').checked = /Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) || (navigator.connection || {}).type === 'cellular';
 ['#budget', '#mins', '#mobile'].forEach(s => $(s).onchange = plan); plan();
-$('#test').onclick = async () => {
-  const out = $('#testout'); out.textContent = 'Testing… (up to 8 seconds)';
-  let cfg; try { cfg = await (await fetch('/config')).json(); } catch { out.textContent = '✗ Cannot reach the server.'; return; }
-  const pc = new RTCPeerConnection({iceServers: cfg.iceServers}), found = new Set();
-  pc.createDataChannel('t'); pc.onicecandidate = e => e.candidate && found.add(e.candidate.type);
-  await pc.setLocalDescription(await pc.createOffer());
-  await new Promise(r => { const t = setTimeout(r, 8000); pc.onicegatheringstatechange = () => { if (pc.iceGatheringState === 'complete') { clearTimeout(t); r(); } }; });
-  pc.close();
-  out.textContent = (found.has('srflx') ? '✓ Direct route found. ' : '✗ No direct route found. ') + (found.has('relay') ? '✓ Relay works (strict mobile networks are covered).' : cfg.relay ? '✗ Relay not reachable from your network.' : '✗ This server has no relay set up yet.');
-};
 
+// --- Stats Loop ---
 let lastT = performance.now();
 setInterval(async () => {
-  if (S.ended) return;
-  if (!peers.size) { renderBudget(); return; }
-  let relay = false, direct = false, codec = '';
+  if (S.ended || !peers.size) { renderBudget(); return; }
   const now = performance.now(), dt = (now - lastT) / 1000; lastT = now;
   for (const p of peers.values()) {
     try {
-      const st = await p.pc.getStats(), by = {}; st.forEach(r => by[r.id] = r); accountant.ingest(p.id, st);
-      st.forEach(r => {
-        if (r.type === 'outbound-rtp' && r.kind === 'video' && by[r.codecId]) codec = by[r.codecId].mimeType.replace('video/', '');
-        if (r.type === 'inbound-rtp' && r.kind === 'video' && r.frameHeight) p.res = r.framesPerSecond > 0 ? r.frameHeight + 'p · ' + Math.round(r.framesPerSecond) + ' fps' : 'no video';
-        if (r.type === 'candidate-pair' && r.nominated && r.state === 'succeeded') { const l = by[r.localCandidateId], m = by[r.remoteCandidateId]; if ((l && l.candidateType === 'relay') || (m && m.candidateType === 'relay')) relay = true; else direct = true; }
-      });
+      const st = await p.pc.getStats(); accountant.ingest(p.id, st);
     } catch {}
-    if (p.res && p.pc.connectionState === 'connected') p.tile.s.textContent = 'Guest ' + p.id.slice(0, 3) + ' · ' + p.res;
   }
   const newTotal = accountant.total() / 1e6; const deltaBytes = Math.max(0, (newTotal * 1e6) - (TU + TD)); TU = accountant.totalSent() / 1e6; TD = accountant.totalRecv() / 1e6;
-  budgetTick(deltaBytes, dt);
-  const kb = b => Math.round(b * 8 / 1000 / dt);
-  $('#up').textContent = kb(accountant.lastRate.sent) + ' kbit/s'; $('#dn').textContent = kb(accountant.lastRate.recv) + ' kbit/s';
-  $('#tot').textContent = accountant.total() / 1e6 + ' MB'; $('#ph').textContent = '≈ ' + Math.round((accountant.lastRate.sent + accountant.lastRate.recv) * 8 / 1000 * 0.45) + ' MB/h';
-  const s = accountant.session, fmt = b => (b / 1e6).toFixed(1) + ' MB';
-  $('#cats').innerHTML = 'Audio ' + fmt(s.audioSent + s.audioRecv) + ' · Video ' + fmt(s.videoSent + s.videoRecv) + ' · Slides ' + fmt(s.screenSent + s.screenRecv) + '<br>Transport: ' + fmt(s.transportSent + s.transportRecv);
-  const seconds = Math.max(1, (now - S.t0) / 1000), people = Math.max(1, peers.size);
-  const baselineMB = (BASELINE_KBPS * 1000 / 8) * seconds * people / 1e6;
-  const savedMB = Math.max(0, baselineMB - accountant.total() / 1e6);
-  const savedPct = baselineMB > 0 ? Math.round(savedMB / baselineMB * 100) : 0;
-  const sn = $('#savedNum'); if (sn) sn.textContent = savedMB.toFixed(1) + ' MB';
-  const ss = $('#savedSub'); if (ss) ss.textContent = savedPct + '% less than a normal HD call so far';
-  $('#net').textContent = (relay ? 'Relayed via TURN' : direct ? 'Direct peer-to-peer' : 'Connecting…') + (codec ? ' · ' + codec : '');
+  renderBudget();
 }, 2000);
+
+// Request Notification permission on load
+if ('Notification' in window && Notification.permission === 'default') {
+  Notification.requestPermission();
+}
 </script>
 </body>
 </html>
