@@ -4,15 +4,13 @@
   const $ = selector => document.querySelector(selector);
 
   // The original startCall references a removed #join element before doing any work.
-  // Keep a harmless compatibility node so joining is not aborted by a null dereference.
   if (!$('#join')) {
     const join = document.createElement('span');
     join.id = 'join'; join.hidden = true;
     document.body.appendChild(join);
   }
 
-  // Reuse the app's WebRTC flow, but set the shared room before signaling. This is
-  // essential for direct calls, where the room differs from the home-page room.
+  // Reuse the app's WebRTC flow, but set the shared room before signaling.
   if (typeof startCall === 'function') {
     const originalStartCall = startCall;
     let starting = false;
@@ -36,7 +34,7 @@
     };
   }
 
-  // Invite panel and its actions were present in the markup but had no handlers.
+  // Invite panel handlers (present in markup but unwired).
   const inviteSheet = $('#sheet-invite');
   function openInvite() {
     const currentRoom = (typeof room !== 'undefined' && room) || location.hash.slice(1);
@@ -45,7 +43,9 @@
     $('#link').value = link.href;
     inviteSheet.hidden = false;
   }
-  ['#invite', '#e-invite'].forEach(selector => { const button = $(selector); if (button) button.onclick = openInvite; });
+  ['#invite', '#e-invite'].forEach(selector => {
+    const button = $(selector); if (button) button.onclick = openInvite;
+  });
   const copyButton = $('#cpy');
   if (copyButton) copyButton.onclick = async () => {
     const input = $('#link');
@@ -59,40 +59,36 @@
   const nativeShare = $('#nat');
   if (nativeShare) {
     nativeShare.hidden = !navigator.share;
-    nativeShare.onclick = async () => { try { await navigator.share({title: 'Join my LowData Call', url: $('#link').value}); } catch (e) { if (e.name !== 'AbortError') console.warn(e); } };
+    nativeShare.onclick = async () => {
+      try { await navigator.share({ title: 'Join my LowData Call', url: $('#link').value }); }
+      catch (e) { if (e.name !== 'AbortError') console.warn(e); }
+    };
   }
   const whatsApp = $('#wa');
-  if (whatsApp) whatsApp.onclick = () => window.open('https://wa.me/?text=' + encodeURIComponent('Join my LowData Call: ' + $('#link').value), '_blank', 'noopener,noreferrer');
+  if (whatsApp) whatsApp.onclick = () =>
+    window.open('https://wa.me/?text=' + encodeURIComponent('Join my LowData Call: ' + $('#link').value), '_blank', 'noopener,noreferrer');
   const email = $('#em');
-  if (email) email.onclick = () => { location.href = 'mailto:?subject=' + encodeURIComponent('Join my LowData Call') + '&body=' + encodeURIComponent('Join my call: ' + $('#link').value); };
+  if (email) email.onclick = () => {
+    location.href = 'mailto:?subject=' + encodeURIComponent('Join my LowData Call') + '&body=' + encodeURIComponent('Join my call: ' + $('#link').value);
+  };
 
-  // Route the direct-call room through the same shared global state as WebRTC signaling.
+  // Direct-call handler.
   if (typeof callFriend === 'function') {
     callFriend = async function (friendId) {
       if (!/^[a-f0-9]{8}$/.test(friendId)) return alert('That contact ID is invalid.');
       const targetRoom = 'call-' + friendId;
       try {
         const response = await fetch('/ring', {
-          method: 'POST', headers: {'content-type': 'application/json'},
-          body: JSON.stringify({to: friendId, from: myId, room: targetRoom, name: 'LowData Call'})
+          method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ to: friendId, from: myId, room: targetRoom, name: 'LowData Call' })
         });
         if (!response.ok) return alert('User is offline or unavailable.');
         await startCall(targetRoom);
-      } catch (error) { alert('Could not place the call. Check your connection and try again.'); }
+      } catch { alert('Could not place the call. Check your connection and try again.'); }
     };
   }
-  const incomingAccept = $('#btn-accept');
-  if (incomingAccept) {
-    incomingAccept.addEventListener('click', () => {
-      const overlay = $('#incoming-call');
-      if (overlay) overlay.hidden = true;
-      const targetRoom = typeof currentCallRoom !== 'undefined' ? currentCallRoom : location.hash.slice(1);
-      if (targetRoom) startCall(targetRoom);
-    });
-  }
 
-  // Start the HTML media elements from the user gesture, and make the speaker control
-  // reliably toggle remote audio. Browser/device audio routing remains OS-controlled.
+  // Speaker toggle + iOS play unlock on any grid mutation.
   let speakerOn = true;
   function applySpeakerState() {
     document.querySelectorAll('#grid video').forEach(video => {
@@ -112,12 +108,11 @@
   const speaker = $('#speaker');
   if (speaker) speaker.onclick = () => { speakerOn = !speakerOn; applySpeakerState(); };
   const grid = $('#grid');
-  if (grid) new MutationObserver(applySpeakerState).observe(grid, {childList: true, subtree: true});
+  if (grid) new MutationObserver(applySpeakerState).observe(grid, { childList: true, subtree: true });
 
-  // The connection test gathers real ICE candidates, which verifies actual STUN/TURN
-  // reachability from this browser rather than only checking whether /config responds.
+  // Connection test — gathers real ICE candidates.
   async function gatherCandidates(servers, timeoutMs = 10000) {
-    const pc = new RTCPeerConnection({iceServers: servers, iceCandidatePoolSize: 0});
+    const pc = new RTCPeerConnection({ iceServers: servers, iceCandidatePoolSize: 0 });
     const types = new Set();
     pc.onicecandidate = event => {
       if (event.candidate) {
@@ -148,12 +143,14 @@
     testButton.disabled = true;
     testOutput.textContent = 'Checking your network and relay…';
     try {
-      const response = await fetch('/config', {cache: 'no-store'});
+      const response = await fetch('/config', { cache: 'no-store' });
       if (!response.ok) throw new Error('Server configuration returned HTTP ' + response.status);
       const config = await response.json();
       const allServers = Array.isArray(config.iceServers) ? config.iceServers : [];
-      const turnServers = allServers.filter(server => [].concat(server.urls || []).some(url => /^turns?:/i.test(url)));
-      const directTypes = await gatherCandidates(allServers.filter(server => ![].concat(server.urls || []).some(url => /^turns?:/i.test(url))));
+      const turnServers = allServers.filter(server =>
+        [].concat(server.urls || []).some(url => /^turns?:/i.test(url)));
+      const directTypes = await gatherCandidates(allServers.filter(server =>
+        ![].concat(server.urls || []).some(url => /^turns?:/i.test(url))));
       const hasDirect = directTypes.has('srflx') || directTypes.has('host');
       let relayWorks = false;
       if (turnServers.length) {
@@ -162,7 +159,9 @@
       }
       const result = [];
       result.push(hasDirect ? 'Direct connection: reachable.' : 'Direct connection: no usable ICE candidate found.');
-      result.push(turnServers.length ? (relayWorks ? 'TURN relay: working.' : 'TURN relay: not reachable; check TURN credentials/firewall.') : 'TURN relay: not configured on the server. Calls on restrictive mobile networks may fail.');
+      result.push(turnServers.length
+        ? (relayWorks ? 'TURN relay: working.' : 'TURN relay: not reachable; check TURN credentials/firewall.')
+        : 'TURN relay: not configured on the server. Calls on restrictive mobile networks may fail.');
       testOutput.textContent = result.join(' ');
     } catch (error) {
       console.error('Connection test failed:', error);
@@ -170,24 +169,5 @@
     } finally { testButton.disabled = false; }
   };
 
-  // Make leaving immediate and dependable even if the original inline handler has
-  // partially failed. sendBeacon works while the page is navigating away.
-  const leave = $('#leave');
-  if (leave) leave.onclick = () => {
-    leave.disabled = true;
-    try {
-      const payload = JSON.stringify({room, id: me, token});
-      if (!navigator.sendBeacon || !navigator.sendBeacon('/leave', new Blob([payload], {type: 'application/json'}))) {
-        fetch('/leave', {method: 'POST', headers: {'content-type': 'application/json'}, body: payload, keepalive: true}).catch(() => {});
-      }
-    } catch (error) { console.warn('Could not send leave signal:', error); }
-    try { if (typeof es !== 'undefined' && es) es.close(); } catch {}
-    try { if (typeof peers !== 'undefined') peers.forEach(peer => peer.pc.close()); } catch {}
-    try { [mic, cam, scr].forEach(track => track && track.stop()); } catch {}
-    try { if (typeof wake !== 'undefined' && wake) wake.release(); } catch {}
-    location.reload();
-  };
-
-  // Avoid a crash on browsers without the Notification API.
-  if (typeof Notification === 'undefined') window.Notification = {permission: 'denied'};
+  if (typeof Notification === 'undefined') window.Notification = { permission: 'denied' };
 })();
